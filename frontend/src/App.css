@@ -1,0 +1,25 @@
+.PurpleGradient {
+  background: #7747cd;
+  background: -webkit-linear-gradient(to right, #7747cd 0%, #f8514b 100%);
+  background: -moz-linear-gradient(to right, #7747cd 0%, #f8514b 100%);
+  background: linear-gradient(to right, #7747cd 0%, #f8514b 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.TextColorBasic {
+  @apply text-gray-700 dark:text-gray-200 tracking-wide;
+}
+
+.BackgroundBlur {
+  @apply dark:bg-gray-600/[0.25] bg-gray-200/[0.25] filter backdrop-blur-sm rounded-xl;
+}
+.BackgroundBlurForm {
+  @apply dark:bg-gray-50/[0.75] bg-gray-200/[0.25] filter backdrop-blur-sm rounded-xl;
+}
+.TextOrange {
+  @apply text-[#FB5343] tracking-wide;
+}
+strong {
+  @apply text-[#FB5343];
+}

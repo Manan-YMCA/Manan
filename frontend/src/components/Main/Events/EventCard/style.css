@@ -1,0 +1,29 @@
+.EventCard {
+  @apply rounded-lg overflow-hidden shadow-lg bg-white;
+  @apply flex flex-col items-start rounded-md  w-[90%] sm:w-[60%] md:w-[20rem] lg:w-[30rem];
+}
+
+.EventCard .ImageDiv {
+  @apply w-[100%] md:mx-auto lg:mx-auto xl:mx-auto  bg-white;
+}
+
+.EventCard .ImageDiv img {
+  @apply w-full h-full object-cover;
+}
+
+.EventCard .InfoDiv {
+  @apply py-4 px-4;
+}
+.EventCard .InfoDiv .Title {
+  @apply text-[1.2rem] font-semibold text-gray-800;
+}
+.EventCard .InfoDiv .Date {
+  @apply text-gray-500;
+}
+
+.EventCard .InfoDiv .Information {
+  @apply pt-4;
+}
+.EventCard .InfoDiv .Information h1 {
+  @apply font-bold;
+}

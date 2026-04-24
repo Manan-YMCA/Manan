@@ -1,0 +1,20 @@
+.Landing {
+  @apply h-screen w-full relative overflow-x-hidden;
+}
+
+.Landing .TitleBox {
+  @apply flex flex-col items-center align-middle justify-center h-full w-full;
+}
+
+.Landing .HeadOne {
+  @apply flex flex-col lg:flex-col items-center justify-center font-bold transition-all duration-300 tracking-wide;
+}
+.Landing .HeadOne .Title {
+  @apply text-[80px] sm:text-[85px] md:text-[120px] leading-[100px] md:leading-[125px];
+}
+.Landing .HeadOne .Subtitle {
+  @apply font-light text-[45px] sm:text-[65px] md:text-[85px];
+}
+.Landing .HeadThree {
+  @apply absolute bottom-[24px] text-[18px] md:text-[24px] text-[#f9524ccb];
+}

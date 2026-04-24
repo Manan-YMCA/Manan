@@ -1,0 +1,39 @@
+{
+  "name": "manan-website-backend",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "tsx watch src/server.ts",
+    "build": "tsc -p tsconfig.json",
+    "start": "node dist/server.js",
+    "db:generate": "drizzle-kit generate",
+    "db:migrate": "drizzle-kit migrate",
+    "auth:generate": "npx @better-auth/cli generate --config ./src/auth/auth.ts"
+  },
+  "dependencies": {
+    "@better-auth/drizzle-adapter": "latest",
+    "better-auth": "latest",
+    "cloudinary": "^2.9.0",
+    "cookie-parser": "^1.4.7",
+    "cors": "^2.8.5",
+    "dotenv": "^17.2.3",
+    "drizzle-orm": "^0.45.2",
+    "express": "^5.1.0",
+    "multer": "^2.0.2",
+    "postgres": "^3.4.7",
+    "resend": "^6.10.0",
+    "zod": "^4.1.12"
+  },
+  "devDependencies": {
+    "@better-auth/cli": "latest",
+    "@types/cookie-parser": "^1.4.10",
+    "@types/cors": "^2.8.19",
+    "@types/express": "^5.0.3",
+    "@types/multer": "^2.0.0",
+    "@types/node": "^24.9.0",
+    "drizzle-kit": "^0.31.4",
+    "tsx": "^4.20.6",
+    "typescript": "^5.9.3"
+  }
+}

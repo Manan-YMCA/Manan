@@ -1,0 +1,6 @@
+.ErrorBoxModel {
+  @apply w-full rounded-lg border-0 outline-none focus:outline-none;
+}
+.ErrorBoxContainer {
+  @apply w-[10rem] dark:bg-gray-50/[0.75] bg-gray-200/[0.25] filter backdrop-blur-sm border-0 rounded-lg outline-none;
+}

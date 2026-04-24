@@ -1,0 +1,7 @@
+.ClubIntro .Intro {
+  @apply p-3 md:p-6 rounded-lg leading-10 md:leading-[3rem];
+}
+
+.ClubIntro .Intro p {
+  @apply text-[18px] md:text-[24px];
+}
