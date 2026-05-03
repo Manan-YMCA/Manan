@@ -9,6 +9,7 @@ import { env } from "../config/env.js";
 import { getRoleForEmail, isAllowedEmail, normalizeEmail } from "./role-resolver.js";
 
 const resend = env.RESEND_API_KEY ? new Resend(env.RESEND_API_KEY) : null;
+const resendFromEmail = env.RESEND_FROM_EMAIL?.trim();
 
 export const auth = betterAuth({
   appName: "Manan Website",
@@ -33,8 +34,14 @@ export const auth = betterAuth({
       allowedAttempts: 5,
       resendStrategy: "reuse",
       async sendVerificationOTP({ email, otp, type }) {
-        if (!resend || !env.RESEND_FROM_EMAIL) {
+        if (!resend || !resendFromEmail) {
           throw new Error("Resend configuration is missing.");
+        }
+
+        if (resendFromEmail.includes("yourdomain.com")) {
+          throw new Error(
+            "RESEND_FROM_EMAIL is still using the placeholder domain. Replace it with an email from a verified Resend domain."
+          );
         }
 
         const subject =
@@ -44,10 +51,11 @@ export const auth = betterAuth({
               ? "Verify your email"
               : "Your password reset code";
 
-        void resend.emails.send({
-          from: env.RESEND_FROM_EMAIL,
+        const response = await resend.emails.send({
+          from: resendFromEmail,
           to: [email],
           subject,
+          text: `Your Manan Website OTP is ${otp}. This code expires in 5 minutes.`,
           html: `<div style="font-family: Arial, sans-serif; line-height: 1.6;">
             <h2>Manan Website</h2>
             <p>Your one-time code is:</p>
@@ -55,6 +63,20 @@ export const auth = betterAuth({
             <p>This code will expire in 5 minutes.</p>
           </div>`,
         });
+
+        if (response.error) {
+          if (
+            response.error.message?.toLowerCase().includes("not authorized to send emails from")
+          ) {
+            throw new Error(
+              "This Resend API key cannot send from the current RESEND_FROM_EMAIL. Use a sender address from a domain verified inside the same Resend account."
+            );
+          }
+
+          throw new Error(
+            response.error.message || "Failed to send OTP email through Resend."
+          );
+        }
       },
     }),
   ],

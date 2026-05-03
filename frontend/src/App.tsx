@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useState, Suspense } from "react";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { BrowserRouter as Router, Navigate, Routes, Route } from "react-router-dom";
 import "./App.css";
 import BackgroundLayout from "./components/Shared/BackgroundLayout";
 import Navbar from "./components/Shared/Navbar";
@@ -7,26 +7,26 @@ import Footer from "./components/Shared/Footer";
 import CustomButton from "./components/Shared/CustomButton";
 import ErrorModal from "./components/Shared/ErrorModal";
 import LoadingScreen from "./components/Shared/LoadingScreen";
-import AuthModal from "./components/Shared/AuthModal";
 import { authEnabled, signOut, useSession } from "./lib/auth-client";
 import api from "./services/api";
 
 //Lazy Imports
 const Landing = React.lazy(() => import("./components/Main/Landing"));
+const MemberLogin = React.lazy(() => import("./components/Main/MemberLogin"));
 const Members = React.lazy(() => import("./components/Main/Members"));
 const Events = React.lazy(() => import("./components/Main/Events"));
 const Gallery = React.lazy(() => import("./components/Main/Gallery"));
-const EditProfile = React.lazy(() => import("./components/Main/EditProfile"));
+const CompleteProfile = React.lazy(
+  () => import("./components/Main/CompleteProfile")
+);
 const AddGallery = React.lazy(() => import("./components/Main/AddGallery"));
 const AddEvents = React.lazy(() => import("./components/Main/AddEvents"));
-const AddProfile = React.lazy(() => import("./components/Main/AddProfile"));
 
 function App() {
   const { data: session, isPending, refetch } = useSession();
   const [pageError, setPageError] = useState<string | null>(null);
   const [profileData, setProfileData] = useState<any>(undefined);
   const [profileLoading, setProfileLoading] = useState(false);
-  const [authModalOpen, setAuthModalOpen] = useState(false);
 
   const user = session?.user || null;
   const permission = user?.role || null;
@@ -109,11 +109,15 @@ function App() {
           user={!profileLoading && user}
           profileExists={!profileLoading ? profileExists : undefined}
           permission={permission}
-          onClick={() => setAuthModalOpen(true)}
+          onClick={() => {
+            window.location.href = "/member-login";
+          }}
           onSignOut={handleSignOut}
         >
           <CustomButton
-            onClick={() => setAuthModalOpen(true)}
+            onClick={() => {
+              window.location.href = "/member-login";
+            }}
             className="hidden md:block pr-3"
           >
             Member Login
@@ -126,24 +130,21 @@ function App() {
             clicked={() => setPageError(null)}
           />
         )}
-        <AuthModal
-          open={authModalOpen}
-          onClose={() => setAuthModalOpen(false)}
-          onError={(message) => setPageError(message)}
-        />
         <Suspense fallback={<LoadingScreen />}>
           {showLoading && <LoadingScreen />}
           <Routes>
             <Route path="/" element={<Landing />} />
+            <Route path="/member-login" element={<MemberLogin />} />
             <Route path="/members" element={<Members />} />
             <Route path="/events" element={<Events />} />
             <Route path="/gallery" element={<Gallery />} />
-            {user && profileExists === null && (
+            {user && profileExists !== undefined && (
               <Route
-                path="/add-profile"
+                path="/complete-profile"
                 element={
-                  <AddProfile
+                  <CompleteProfile
                     user={user}
+                    profileData={profileExists || null}
                     onProfileSaved={async () => {
                       await refetch();
                       const response = await api.get("/members/me");
@@ -153,19 +154,16 @@ function App() {
                 }
               />
             )}
-            {user && profileExists && (
+            {user && (
+              <Route
+                path="/add-profile"
+                element={<Navigate to="/complete-profile" replace />}
+              />
+            )}
+            {user && (
               <Route
                 path="/edit-profile"
-                element={
-                  <EditProfile
-                    user={user}
-                    profileData={profileExists}
-                    onProfileSaved={async () => {
-                      const response = await api.get("/members/me");
-                      setProfileData(response.data.data);
-                    }}
-                  />
-                }
+                element={<Navigate to="/complete-profile" replace />}
               />
             )}
             {permission === "admin" && (

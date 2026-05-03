@@ -19,14 +19,14 @@ const profileExistsRoutes = [
   { name: "Members", href: "/members", current: false },
   { name: "Events", href: "/events", current: false },
   { name: "Gallery", href: "/gallery", current: false },
-  { name: "Edit Profile", href: "/edit-profile", current: false },
+  { name: "Complete Profile", href: "/complete-profile", current: false },
 ];
 const profileDoesNotExistsRoutes = [
   { name: "Home", href: "/", current: true },
   { name: "Members", href: "/members", current: false },
   { name: "Events", href: "/events", current: false },
   { name: "Gallery", href: "/gallery", current: false },
-  { name: "Add Profile", href: "/add-profile", current: false },
+  { name: "Complete Profile", href: "/complete-profile", current: false },
 ];
 
 function classNames(...classes) {

@@ -10,7 +10,7 @@ const envSchema = z.object({
   BETTER_AUTH_SECRET: z.string().min(16),
   DATABASE_URL: z.string().min(1),
   ADMIN_EMAIL: z.string().email().default("xyz@gmail.com"),
-  ALLOWED_USER_EMAILS: z.string().default("xyz@gmail.com"),
+  ALLOWED_USER_EMAILS: z.string().default(""),
   RESEND_API_KEY: z.string().optional(),
   RESEND_FROM_EMAIL: z.string().optional(),
   CLOUDINARY_CLOUD_NAME: z.string().optional(),

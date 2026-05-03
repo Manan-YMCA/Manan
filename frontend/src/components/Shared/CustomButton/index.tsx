@@ -4,7 +4,12 @@ import "./style.css";
 const CustomButton = (props) => {
   return (
     <div className={props.className}>
-      <button onClick={props.onClick} className="Button" type="submit">
+      <button
+        onClick={props.onClick}
+        className="Button"
+        type={props.type || "button"}
+        disabled={props.disabled || props.isDisabled}
+      >
         {props.children}
       </button>
     </div>

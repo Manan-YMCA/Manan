@@ -60,7 +60,7 @@ export const CustomLinkInput = (props) => {
     <div className="flex gap-4 m-3 py-2">
       <div className="w-[10rem]">
         <TextField
-          defaultValue={props.valueOne}
+          value={props.valueOne || ""}
           onChange={props.onChangeOne}
           fullWidth
           id={props.name}
@@ -73,7 +73,7 @@ export const CustomLinkInput = (props) => {
       <div className="w-full">
         <TextField
           fullWidth
-          defaultValue={props.valueTwo}
+          value={props.valueTwo || ""}
           onChange={props.onChangeTwo}
           id={props.name}
           label={props.labelTwo}

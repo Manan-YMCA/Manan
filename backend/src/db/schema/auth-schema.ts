@@ -59,3 +59,9 @@ export const verifications = pgTable("verification", {
   createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
   updatedAt: timestamp("updated_at", { withTimezone: true }).notNull().defaultNow(),
 });
+
+// Better Auth's Drizzle adapter looks for these exact model keys.
+export const user = users;
+export const session = sessions;
+export const account = accounts;
+export const verification = verifications;

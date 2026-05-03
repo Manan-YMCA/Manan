@@ -4,6 +4,23 @@ import { AuthenticatedRequest } from "../../middleware/require-session.js";
 import { memberPayloadSchema } from "./members.validation.js";
 import { membersService } from "./members.service.js";
 
+const buildMemberPayload = (
+  req: AuthenticatedRequest,
+  payload: ReturnType<typeof memberPayloadSchema.parse>
+) => ({
+  name: payload.name,
+  admission: payload.admission,
+  role: payload.role,
+  frameworks: payload.frameworks,
+  languages: payload.languages,
+  otherSkills: payload.otherSkills,
+  banner: payload.banner,
+  pfp: payload.pfp,
+  pfpPublicId: payload.pfpPublicId,
+  permission: req.auth.user.role ?? "user",
+  socialLinks: payload.socialLinks,
+});
+
 export const membersController = {
   async listMembers(_req: Request, res: Response, next: NextFunction) {
     try {
@@ -35,33 +52,25 @@ export const membersController = {
   async createMyProfile(req: Request, res: Response, next: NextFunction) {
     try {
       const authenticatedRequest = req as AuthenticatedRequest;
-      const existingProfile = await membersService.getMemberByUserId(
-        authenticatedRequest.auth.user.id
+      const payload = memberPayloadSchema.parse(req.body);
+      const result = await membersService.saveMemberForUser(
+        {
+          userId: authenticatedRequest.auth.user.id,
+          email: authenticatedRequest.auth.user.email,
+        },
+        buildMemberPayload(authenticatedRequest, payload)
       );
 
-      if (existingProfile) {
-        res.status(409).json(errorResponse("Profile already exists."));
-        return;
-      }
-
-      const payload = memberPayloadSchema.parse(req.body);
-      const createdProfile = await membersService.createMember({
-        userId: authenticatedRequest.auth.user.id,
-        email: authenticatedRequest.auth.user.email,
-        name: payload.name,
-        admission: payload.admission,
-        role: payload.role,
-        frameworks: payload.frameworks,
-        languages: payload.languages,
-        otherSkills: payload.otherSkills,
-        banner: payload.banner,
-        pfp: payload.pfp,
-        pfpPublicId: payload.pfpPublicId,
-        permission: authenticatedRequest.auth.user.role ?? "user",
-        socialLinks: payload.socialLinks,
-      });
-
-      res.status(201).json(successResponse("Profile created successfully.", createdProfile));
+      res
+        .status(result.created ? 201 : 200)
+        .json(
+          successResponse(
+            result.created
+              ? "Profile created successfully."
+              : "Profile updated successfully.",
+            result.member
+          )
+        );
     } catch (error) {
       next(error);
     }
@@ -71,34 +80,15 @@ export const membersController = {
     try {
       const authenticatedRequest = req as AuthenticatedRequest;
       const payload = memberPayloadSchema.parse(req.body);
-      const existingProfile = await membersService.getMemberByUserId(
-        authenticatedRequest.auth.user.id
-      );
-
-      if (!existingProfile) {
-        res.status(404).json(errorResponse("Profile not found."));
-        return;
-      }
-
-      const updatedProfile = await membersService.updateMemberByUserId(
-        authenticatedRequest.auth.user.id,
+      const result = await membersService.saveMemberForUser(
         {
+          userId: authenticatedRequest.auth.user.id,
           email: authenticatedRequest.auth.user.email,
-          name: payload.name,
-          admission: payload.admission,
-          role: payload.role,
-          frameworks: payload.frameworks,
-          languages: payload.languages,
-          otherSkills: payload.otherSkills,
-          banner: payload.banner,
-          pfp: payload.pfp,
-          pfpPublicId: payload.pfpPublicId,
-          permission: authenticatedRequest.auth.user.role ?? "user",
-          socialLinks: payload.socialLinks,
-        }
+        },
+        buildMemberPayload(authenticatedRequest, payload)
       );
 
-      res.json(successResponse("Profile updated successfully.", updatedProfile));
+      res.json(successResponse("Profile updated successfully.", result.member));
     } catch (error) {
       next(error);
     }
