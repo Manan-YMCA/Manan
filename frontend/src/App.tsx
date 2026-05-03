@@ -99,7 +99,12 @@ function App() {
 
   return (
     <div className="App overflow-x-hidden">
-      <Router>
+      <Router
+        future={{
+          v7_startTransition: true,
+          v7_relativeSplatPath: true,
+        }}
+      >
         <Navbar
           user={!profileLoading && user}
           profileExists={!profileLoading ? profileExists : undefined}

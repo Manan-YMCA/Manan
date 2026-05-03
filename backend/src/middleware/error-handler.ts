@@ -14,9 +14,11 @@ export const errorHandler = (
   }
 
   if (error instanceof Error) {
-    res.status(400).json(errorResponse(error.message));
+    console.error("Unhandled backend error:", error);
+    res.status(500).json(errorResponse(error.message));
     return;
   }
 
+  console.error("Unknown backend error:", error);
   res.status(500).json(errorResponse("Internal server error."));
 };

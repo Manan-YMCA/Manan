@@ -89,18 +89,16 @@ export default function Navbar(props) {
                   >
                     <img className="w-8 h-8" src={MananLogo} alt="manan" />
                   </motion.div>
-                  <p className="text-gray-800 dark:text-white pl-1 md:pl-3 text-[24px]">
-                    <motion.div
+                  <div className="text-gray-800 dark:text-white pl-1 md:pl-3 text-[24px]">
+                    <motion.span
                       animate={{ x: 0, opacity: 1 }}
                       initial={{ x: -10, opacity: 0 }}
                       transition={{ ease: "easeOut", duration: 2 }}
-                      className="Logo-Text-Wrapper"
+                      className="Logo-Text-Wrapper inline-block font-extrabold text-gray-700 dark:text-gray-50"
                     >
-                      <span className="font-extrabold text-gray-700 dark:text-gray-50">
-                        Manan
-                      </span>
-                    </motion.div>
-                  </p>
+                      Manan
+                    </motion.span>
+                  </div>
                 </div>
                 <div className="hidden sm:block sm:ml-6">
                   <div className="flex items-center justify-center space-x-4">
