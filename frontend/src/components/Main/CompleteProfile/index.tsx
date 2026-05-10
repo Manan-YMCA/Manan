@@ -5,7 +5,6 @@ import { AiOutlineMinusCircle, AiOutlinePlusCircle } from "react-icons/ai";
 import {
   CustomLinkInput,
   CustomTextInput,
-  CustomYearPicker,
 } from "../../Shared/Inputs";
 import MastTitle from "../../Shared/MastTitle";
 import CustomButton from "../../Shared/CustomButton";
@@ -21,7 +20,7 @@ const getLegacyPassOutYear = (profileData) =>
   profileData?.admission ||
   (profileData?.batchDate
     ? new Date(`${profileData.batchDate}T00:00:00`).getFullYear()
-    : new Date().getFullYear());
+    : "");
 
 const CompleteProfile = ({ user, profileData, onProfileSaved }) => {
   const [currentProfileData, setCurrentProfileData] = useState(profileData || null);
@@ -29,9 +28,6 @@ const CompleteProfile = ({ user, profileData, onProfileSaved }) => {
   const [successMessage, setSuccessMessage] = useState("");
   const [linksArray, setLinksArray] = useState([createEmptyLink()]);
   const [profilePic, setProfilePic] = useState<any[]>([]);
-  const [selectedPassOutYear, setSelectedPassOutYear] = useState(
-    new Date(new Date().getFullYear(), 0, 1)
-  );
   const [formSubmitting, setFormSubmitting] = useState(false);
   const isEditing = Boolean(currentProfileData);
 
@@ -45,9 +41,6 @@ const CompleteProfile = ({ user, profileData, onProfileSaved }) => {
     } else {
       setLinksArray([createEmptyLink()]);
     }
-
-    const initialYear = getLegacyPassOutYear(currentProfileData);
-    setSelectedPassOutYear(new Date(initialYear, 0, 1));
     setProfilePic([]);
   }, [currentProfileData]);
 
@@ -138,7 +131,7 @@ const CompleteProfile = ({ user, profileData, onProfileSaved }) => {
 
       const payload = {
         name: values.name,
-        passOutYear: selectedPassOutYear.getFullYear(),
+        passOutYear: Number(values.passOutYear),
         role: values.role,
         frameworks: values.frameworks,
         languages: values.languages,
@@ -219,24 +212,19 @@ const CompleteProfile = ({ user, profileData, onProfileSaved }) => {
             {(formikProps) => (
               <Form>
                 <CustomTextInput
+                  label="Pass Out Year"
+                  name="passOutYear"
+                  type="number"
+                  placeholder="Enter your pass out year"
+                  inputProps={{
+                    min: 2015,
+                    max: new Date().getFullYear() + 4,
+                  }}
+                />
+                <CustomTextInput
                   label="Name"
                   name="name"
                   placeholder="Name here"
-                />
-                <CustomYearPicker
-                  value={selectedPassOutYear}
-                  onChange={(newValue) => {
-                    if (newValue) {
-                      setSelectedPassOutYear(newValue);
-                      formikProps.setFieldValue(
-                        "passOutYear",
-                        newValue.getFullYear()
-                      );
-                    }
-                  }}
-                  label="Pass Out Year"
-                  name="passOutYear"
-                  placeholder="Select your pass out year"
                 />
                 <CustomTextInput
                   label="Your role"

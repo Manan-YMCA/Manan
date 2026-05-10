@@ -43,13 +43,12 @@ export const membersController = {
       const profile = await membersService.getMemberByUserId(
         authenticatedRequest.auth.user.id
       );
-
-      if (!profile) {
-        res.status(404).json(errorResponse("Profile not found."));
-        return;
-      }
-
-      res.json(successResponse("Profile fetched successfully.", profile));
+      res.json(
+        successResponse(
+          profile ? "Profile fetched successfully." : "Profile not created yet.",
+          profile ?? null
+        )
+      );
     } catch (error) {
       next(error);
     }
