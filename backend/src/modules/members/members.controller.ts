@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from "express";
-import { errorResponse, successResponse } from "../../utils/api-response.js";
+import { successResponse } from "../../utils/api-response.js";
 import { AuthenticatedRequest } from "../../middleware/require-session.js";
 import { memberPayloadSchema } from "./members.validation.js";
 import { membersService } from "./members.service.js";

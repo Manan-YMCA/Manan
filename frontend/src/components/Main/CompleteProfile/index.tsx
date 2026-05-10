@@ -28,6 +28,7 @@ const CompleteProfile = ({ user, profileData, onProfileSaved }) => {
   const [successMessage, setSuccessMessage] = useState("");
   const [linksArray, setLinksArray] = useState([createEmptyLink()]);
   const [profilePic, setProfilePic] = useState<any[]>([]);
+  const [bannerPic, setBannerPic] = useState<any[]>([]);
   const [formSubmitting, setFormSubmitting] = useState(false);
   const isEditing = Boolean(currentProfileData);
 
@@ -41,6 +42,7 @@ const CompleteProfile = ({ user, profileData, onProfileSaved }) => {
     } else {
       setLinksArray([createEmptyLink()]);
     }
+    setBannerPic([]);
     setProfilePic([]);
   }, [currentProfileData]);
 
@@ -120,8 +122,14 @@ const CompleteProfile = ({ user, profileData, onProfileSaved }) => {
       setError(null);
       setSuccessMessage("");
 
+      let nextBanner = currentProfileData?.banner || null;
       let nextPfp = currentProfileData?.pfp || null;
       let nextPfpPublicId = currentProfileData?.pfpPublicId || null;
+
+      if (bannerPic.length > 0) {
+        const bannerUpload = await uploadImage(bannerPic[0], "members");
+        nextBanner = bannerUpload.secureUrl;
+      }
 
       if (profilePic.length > 0) {
         const upload = await uploadImage(profilePic[0], "members");
@@ -137,7 +145,7 @@ const CompleteProfile = ({ user, profileData, onProfileSaved }) => {
         languages: values.languages,
         otherSkills: values.otherSkills,
         socialLinks: removeEmptySocialLinks(linksArray),
-        banner: values.banner,
+        banner: nextBanner,
         pfp: nextPfp,
         pfpPublicId: nextPfpPublicId,
         email: user.email,
@@ -155,6 +163,7 @@ const CompleteProfile = ({ user, profileData, onProfileSaved }) => {
 
       setCurrentProfileData(savedProfile);
       await onProfileSaved?.();
+      setBannerPic([]);
       setProfilePic([]);
       setSuccessMessage(
         isEditing
@@ -246,10 +255,15 @@ const CompleteProfile = ({ user, profileData, onProfileSaved }) => {
                   name="otherSkills"
                   placeholder="Any other skill you want to mention?"
                 />
-                <CustomTextInput
-                  label="Banner image URL"
-                  name="banner"
-                  placeholder="Put any banner image URL hosted online (optional)"
+
+                <div className="m-3 pt-2 pl-2 font-bold">
+                  <p>Select Banner Image</p>
+                </div>
+                <ImageUploadBox
+                  fileURL={currentProfileData?.banner}
+                  onDrop={(files) => {
+                    setBannerPic(files || []);
+                  }}
                 />
 
                 <div className="m-3 pt-2 pl-2 font-bold">

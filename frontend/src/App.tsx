@@ -46,16 +46,9 @@ function App() {
         setProfileLoading(true);
         const response = await api.get("/members/me");
         if (isMounted) {
-          setProfileData(response.data.data);
+          setProfileData(response.data.data ?? null);
         }
       } catch (error) {
-        if (error?.response?.status === 404) {
-          if (isMounted) {
-            setProfileData(null);
-          }
-          return;
-        }
-
         if (isMounted) {
           setPageError(
             error?.response?.data?.message || "Unable to load your profile."
@@ -148,7 +141,7 @@ function App() {
                     onProfileSaved={async () => {
                       await refetch();
                       const response = await api.get("/members/me");
-                      setProfileData(response.data.data);
+                      setProfileData(response.data.data ?? null);
                     }}
                   />
                 }

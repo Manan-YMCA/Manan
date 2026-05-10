@@ -25,7 +25,15 @@ const MemberCard = (props) => {
       >
         <div className="CardDiv">
           <div className="BannerImageDiv">
-            <img className="Image" src={banner || "/banner-manan.png"} alt="cover" />
+            <img
+              className="Image"
+              src={banner || "/banner-manan.png"}
+              alt="cover"
+              onError={(event) => {
+                event.currentTarget.onerror = null;
+                event.currentTarget.src = "/banner-manan.png";
+              }}
+            />
           </div>
           <div className="DpImageDiv">
             <img className="DpImage" src={pfp || "/logo-manan.png"} alt="member" />
