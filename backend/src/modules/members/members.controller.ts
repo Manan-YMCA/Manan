@@ -7,19 +7,25 @@ import { membersService } from "./members.service.js";
 const buildMemberPayload = (
   req: AuthenticatedRequest,
   payload: ReturnType<typeof memberPayloadSchema.parse>
-) => ({
-  name: payload.name,
-  admission: payload.admission,
-  role: payload.role,
-  frameworks: payload.frameworks,
-  languages: payload.languages,
-  otherSkills: payload.otherSkills,
-  banner: payload.banner,
-  pfp: payload.pfp,
-  pfpPublicId: payload.pfpPublicId,
-  permission: req.auth.user.role ?? "user",
-  socialLinks: payload.socialLinks,
-});
+) => {
+  const resolvedPassOutYear = payload.passOutYear ?? payload.admission!;
+
+  return {
+    name: payload.name,
+    admission: resolvedPassOutYear,
+    passOutYear: resolvedPassOutYear,
+    batchDate: `${resolvedPassOutYear}-01-01`,
+    role: payload.role,
+    frameworks: payload.frameworks,
+    languages: payload.languages,
+    otherSkills: payload.otherSkills,
+    banner: payload.banner,
+    pfp: payload.pfp,
+    pfpPublicId: payload.pfpPublicId,
+    permission: req.auth.user.role ?? "user",
+    socialLinks: payload.socialLinks,
+  };
+};
 
 export const membersController = {
   async listMembers(_req: Request, res: Response, next: NextFunction) {

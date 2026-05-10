@@ -12,19 +12,19 @@ export const CustomTextInput = (props) => {
   return (
     <div className="m-3 py-2">
       <TextField
-      
         {...props}
         {...field}
         fullWidth
-        error={meta.touched && meta.error ? meta.error : false}
+        error={Boolean(meta.touched && meta.error)}
         id={props.name}
         label={props.label}
-        helperText={meta.error}
+        helperText={meta.touched ? meta.error : ""}
         multiline={props.multiline && true}
         InputLabelProps={{
+          shrink: props.type === "date" ? true : undefined,
           style: { color: "grey" },
         }}
-        type={props.password && "password"}
+        type={props.password ? "password" : props.type}
       />
     </div>
   );

@@ -6,6 +6,7 @@ export const events = pgTable("events", {
     .$defaultFn(() => crypto.randomUUID()),
   name: text("name").notNull(),
   date: text("date").notNull(),
+  eventDateValue: text("event_date_value"),
   desc: text("desc").notNull(),
   detailsLink: text("details_link"),
   eventImage: text("event_image").notNull(),

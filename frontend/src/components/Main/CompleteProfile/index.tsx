@@ -16,6 +16,12 @@ import api from "../../../services/api";
 import { uploadImage } from "../../../services/upload";
 
 const createEmptyLink = () => ({ title: "", link: "" });
+const getLegacyPassOutYear = (profileData) =>
+  profileData?.passOutYear ||
+  profileData?.admission ||
+  (profileData?.batchDate
+    ? new Date(`${profileData.batchDate}T00:00:00`).getFullYear()
+    : new Date().getFullYear());
 
 const CompleteProfile = ({ user, profileData, onProfileSaved }) => {
   const [currentProfileData, setCurrentProfileData] = useState(profileData || null);
@@ -23,7 +29,9 @@ const CompleteProfile = ({ user, profileData, onProfileSaved }) => {
   const [successMessage, setSuccessMessage] = useState("");
   const [linksArray, setLinksArray] = useState([createEmptyLink()]);
   const [profilePic, setProfilePic] = useState<any[]>([]);
-  const [selectedYear, setSelectedYear] = useState(new Date());
+  const [selectedPassOutYear, setSelectedPassOutYear] = useState(
+    new Date(new Date().getFullYear(), 0, 1)
+  );
   const [formSubmitting, setFormSubmitting] = useState(false);
   const isEditing = Boolean(currentProfileData);
 
@@ -38,12 +46,8 @@ const CompleteProfile = ({ user, profileData, onProfileSaved }) => {
       setLinksArray([createEmptyLink()]);
     }
 
-    if (currentProfileData?.admission) {
-      setSelectedYear(new Date(currentProfileData.admission, 0, 1));
-    } else {
-      setSelectedYear(new Date());
-    }
-
+    const initialYear = getLegacyPassOutYear(currentProfileData);
+    setSelectedPassOutYear(new Date(initialYear, 0, 1));
     setProfilePic([]);
   }, [currentProfileData]);
 
@@ -51,7 +55,7 @@ const CompleteProfile = ({ user, profileData, onProfileSaved }) => {
     () => ({
       name: currentProfileData?.name || user?.name || "",
       role: currentProfileData?.role || "",
-      admission: currentProfileData?.admission || "",
+      passOutYear: getLegacyPassOutYear(currentProfileData),
       languages: currentProfileData?.languages || "",
       frameworks: currentProfileData?.frameworks || "",
       otherSkills: currentProfileData?.otherSkills || "",
@@ -134,7 +138,7 @@ const CompleteProfile = ({ user, profileData, onProfileSaved }) => {
 
       const payload = {
         name: values.name,
-        admission: selectedYear.getFullYear(),
+        passOutYear: selectedPassOutYear.getFullYear(),
         role: values.role,
         frameworks: values.frameworks,
         languages: values.languages,
@@ -198,6 +202,13 @@ const CompleteProfile = ({ user, profileData, onProfileSaved }) => {
                 .min(4, "Must be atleast 4 characters")
                 .max(100, "Cannot exceed 200 character")
                 .required("Required"),
+              passOutYear: Yup.number()
+                .min(2015, "Pass out year must be 2015 or later")
+                .max(
+                  new Date().getFullYear() + 4,
+                  `Pass out year cannot exceed ${new Date().getFullYear() + 4}`
+                )
+                .required("Required"),
               role: Yup.string().required("Required"),
               languages: Yup.string().required("Required"),
               frameworks: Yup.string().required("Required"),
@@ -213,15 +224,19 @@ const CompleteProfile = ({ user, profileData, onProfileSaved }) => {
                   placeholder="Name here"
                 />
                 <CustomYearPicker
-                  value={selectedYear}
+                  value={selectedPassOutYear}
                   onChange={(newValue) => {
                     if (newValue) {
-                      setSelectedYear(newValue);
+                      setSelectedPassOutYear(newValue);
+                      formikProps.setFieldValue(
+                        "passOutYear",
+                        newValue.getFullYear()
+                      );
                     }
                   }}
-                  label="Batch Year"
-                  name="admission"
-                  placeholder="Select your batch year"
+                  label="Pass Out Year"
+                  name="passOutYear"
+                  placeholder="Select your pass out year"
                 />
                 <CustomTextInput
                   label="Your role"

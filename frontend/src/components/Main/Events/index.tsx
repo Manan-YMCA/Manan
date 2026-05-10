@@ -30,6 +30,25 @@ const Events = () => {
   const [value, setValue] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
 
+  const getEventDate = (event: any) => {
+    if (event?.eventDateValue) {
+      const parsedDate = new Date(`${event.eventDateValue}T00:00:00`);
+      if (!Number.isNaN(parsedDate.getTime())) {
+        return parsedDate;
+      }
+    }
+
+    if (event?.date) {
+      const parsedDate = new Date(event.date);
+      if (!Number.isNaN(parsedDate.getTime())) {
+        return parsedDate;
+      }
+    }
+
+    const fallbackDate = new Date(event.timestamp);
+    return Number.isNaN(fallbackDate.getTime()) ? null : fallbackDate;
+  };
+
   useEffect(() => {
     let isMounted = true;
 
@@ -66,17 +85,17 @@ const Events = () => {
   }, []);
 
   const yearArrayHandler = (array: any[]) => {
-    const yearArray = array.map((item) =>
-      new Date(item.timestamp).getFullYear()
-    );
+    const yearArray = array
+      .map((item) => getEventDate(item)?.getFullYear() ?? null)
+      .filter((year) => year !== null);
     const uniq = (items: number[]) => [...new Set(items)];
     return uniq(yearArray).sort((a, b) => b - a);
   };
   const eventsArrayHandler = (array: any[], year: number) => {
     const eventsArray = array
-      .filter((data) => new Date(data.timestamp).getFullYear() === year)
+      .filter((data) => getEventDate(data)?.getFullYear() === year)
       .sort((a, b) => {
-        return new Date(a.timestamp).getTime() - new Date(b.timestamp).getTime();
+        return (getEventDate(a)?.getTime() || 0) - (getEventDate(b)?.getTime() || 0);
       });
     return eventsArray;
   };

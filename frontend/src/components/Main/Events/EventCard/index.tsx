@@ -9,8 +9,24 @@ const boxItem = {
   transition: { ease: "easeOut", duration: 0.5 },
 };
 
+const formatDisplayDate = (event) => {
+  if (event?.eventDateValue) {
+    const parsedDate = new Date(`${event.eventDateValue}T00:00:00`);
+
+    if (!Number.isNaN(parsedDate.getTime())) {
+      return new Intl.DateTimeFormat("en-IN", {
+        day: "numeric",
+        month: "long",
+        year: "numeric",
+      }).format(parsedDate);
+    }
+  }
+
+  return event?.date || "";
+};
+
 const EventCard = (props) => {
-  const { name, desc, date, eventImage, detailsLink } = props.event;
+  const { name, desc, eventImage, detailsLink } = props.event;
   return (
     <div className="flex items-start justify-center w-full">
       <motion.div
@@ -25,7 +41,7 @@ const EventCard = (props) => {
         </div>
         <div className="InfoDiv">
           <div className="Title">{name}</div>
-          <div className="Date">{date}</div>
+          <div className="Date">{formatDisplayDate(props.event)}</div>
           <div className="Information">
             <ReactMarkdown>{desc}</ReactMarkdown>
           </div>

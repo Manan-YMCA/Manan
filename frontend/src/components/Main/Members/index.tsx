@@ -29,6 +29,22 @@ const Members = () => {
   const [value, setValue] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
 
+  const getMemberYear = (member: any) => {
+    if (member?.passOutYear) {
+      return Number(member.passOutYear);
+    }
+
+    if (member?.batchDate) {
+      const parsedDate = new Date(`${member.batchDate}T00:00:00`);
+      if (!Number.isNaN(parsedDate.getTime())) {
+        return parsedDate.getFullYear();
+      }
+    }
+
+    const fallbackYear = Number(member?.admission);
+    return Number.isNaN(fallbackYear) ? null : fallbackYear;
+  };
+
   useEffect(() => {
     let isMounted = true;
 
@@ -65,12 +81,14 @@ const Members = () => {
   }, []);
 
   const yearArrayHandler = (array: any[]) => {
-    const yeararray = array.map((item) => Number(item.admission));
+    const yeararray = array
+      .map((item) => getMemberYear(item))
+      .filter((item) => item !== null);
     const uniq = (items: number[]) => [...new Set(items)];
     return uniq(yeararray).sort((a, b) => a - b);
   };
   const yearwiseMemberHandeler = (array: any[], year: number) => {
-    return array.filter((item) => item.admission === year);
+    return array.filter((item) => getMemberYear(item) === year);
   };
 
   return (

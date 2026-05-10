@@ -12,6 +12,8 @@ export const memberProfiles = pgTable("member_profiles", {
   email: text("email").notNull().unique(),
   name: text("name").notNull(),
   admission: integer("admission").notNull(),
+  passOutYear: integer("pass_out_year"),
+  batchDate: text("batch_date"),
   role: text("role").notNull(),
   frameworks: text("frameworks").notNull(),
   languages: text("languages").notNull(),

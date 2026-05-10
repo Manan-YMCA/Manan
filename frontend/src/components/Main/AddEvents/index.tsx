@@ -10,6 +10,13 @@ import LoadingScreen from "../../Shared/LoadingScreen";
 import api from "../../../services/api";
 import { uploadImage } from "../../../services/upload";
 
+const formatEventDisplayDate = (dateValue: string) =>
+  new Intl.DateTimeFormat("en-IN", {
+    day: "numeric",
+    month: "long",
+    year: "numeric",
+  }).format(new Date(`${dateValue}T00:00:00`));
+
 const AddEvents = ({ user }) => {
   const [error, setError] = useState<string | null>(null);
   const [eventPic, setEventPic] = useState<any>(null);
@@ -26,7 +33,8 @@ const AddEvents = ({ user }) => {
         const upload = await uploadImage(eventPic[0], "events");
         const data = {
           name: values.name,
-          date: values.date,
+          date: formatEventDisplayDate(values.eventDateValue),
+          eventDateValue: values.eventDateValue,
           desc: values.desc,
           detailsLink: values.detailsLink,
           eventImage: upload.secureUrl,
@@ -59,7 +67,7 @@ const AddEvents = ({ user }) => {
               <Formik
                 initialValues={{
                   name: "",
-                  date: "",
+                  eventDateValue: "",
                   desc: "",
                   detailsLink: "",
                 }}
@@ -68,7 +76,7 @@ const AddEvents = ({ user }) => {
                     .min(4, "Must be atleast 4 characters")
                     .max(100, "Cannot exceed 200 character")
                     .required("Required"),
-                  date: Yup.string().required("Required"),
+                  eventDateValue: Yup.string().required("Required"),
                   desc: Yup.string().required("Required"),
                   detailsLink: Yup.string().url("Must be a valid URL").nullable(),
                 })}
@@ -82,9 +90,10 @@ const AddEvents = ({ user }) => {
                       placeholder="Name here"
                     />
                     <CustomTextInput
-                      label="Date of the event "
-                      name="date"
-                      placeholder="In format - 20 October 2022 "
+                      label="Date of the event"
+                      name="eventDateValue"
+                      type="date"
+                      placeholder="Select event date"
                     />
                     <CustomTextInput
                       label="Description"

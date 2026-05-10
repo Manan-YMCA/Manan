@@ -75,6 +75,8 @@ export async function ensureDatabaseSchema() {
       "email" text NOT NULL UNIQUE,
       "name" text NOT NULL,
       "admission" integer NOT NULL,
+      "pass_out_year" integer,
+      "batch_date" text,
       "role" text NOT NULL,
       "frameworks" text NOT NULL,
       "languages" text NOT NULL,
@@ -94,6 +96,7 @@ export async function ensureDatabaseSchema() {
       "id" text PRIMARY KEY,
       "name" text NOT NULL,
       "date" text NOT NULL,
+      "event_date_value" text,
       "desc" text NOT NULL,
       "details_link" text,
       "event_image" text NOT NULL,
@@ -113,6 +116,33 @@ export async function ensureDatabaseSchema() {
       "timestamp" timestamptz NOT NULL DEFAULT now(),
       "updated_at" timestamptz NOT NULL DEFAULT now()
     )
+  `;
+
+  await sql`
+    ALTER TABLE "member_profiles"
+    ADD COLUMN IF NOT EXISTS "pass_out_year" integer
+  `;
+
+  await sql`
+    ALTER TABLE "member_profiles"
+    ADD COLUMN IF NOT EXISTS "batch_date" text
+  `;
+
+  await sql`
+    ALTER TABLE "events"
+    ADD COLUMN IF NOT EXISTS "event_date_value" text
+  `;
+
+  await sql`
+    UPDATE "member_profiles"
+    SET "pass_out_year" = "admission"
+    WHERE "pass_out_year" IS NULL
+  `;
+
+  await sql`
+    UPDATE "member_profiles"
+    SET "batch_date" = CONCAT("admission", '-01-01')
+    WHERE "batch_date" IS NULL
   `;
 
   await sql`

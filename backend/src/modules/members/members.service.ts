@@ -7,8 +7,17 @@ export type MemberInsert = typeof memberProfiles.$inferInsert;
 
 const sortMembers = (members: MemberRecord[]) =>
   [...members].sort((left, right) => {
-    if (left.admission !== right.admission) {
-      return left.admission - right.admission;
+    const leftYear = left.passOutYear ??
+      (left.batchDate
+      ? new Date(`${left.batchDate}T00:00:00`).getFullYear()
+      : left.admission);
+    const rightYear = right.passOutYear ??
+      (right.batchDate
+      ? new Date(`${right.batchDate}T00:00:00`).getFullYear()
+      : right.admission);
+
+    if (leftYear !== rightYear) {
+      return leftYear - rightYear;
     }
 
     return left.name.localeCompare(right.name);
