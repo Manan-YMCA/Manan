@@ -46,9 +46,10 @@ const Gallery = () => {
         if (isMounted) {
           setValue(response.data.data || []);
         }
-      } catch {
+      } catch (error) {
         if (isMounted) {
-          setValue(mockGallery);
+          console.error("Failed to fetch gallery from backend.", error);
+          setValue([]);
         }
       } finally {
         if (isMounted) {

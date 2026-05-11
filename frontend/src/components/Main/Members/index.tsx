@@ -62,9 +62,10 @@ const Members = () => {
         if (isMounted) {
           setValue(response.data.data || []);
         }
-      } catch {
+      } catch (error) {
         if (isMounted) {
-          setValue(mockMembers);
+          console.error("Failed to fetch members from backend.", error);
+          setValue([]);
         }
       } finally {
         if (isMounted) {

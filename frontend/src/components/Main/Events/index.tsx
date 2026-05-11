@@ -66,9 +66,10 @@ const Events = () => {
         if (isMounted) {
           setValue(response.data.data || []);
         }
-      } catch {
+      } catch (error) {
         if (isMounted) {
-          setValue(mockEvents);
+          console.error("Failed to fetch events from backend.", error);
+          setValue([]);
         }
       } finally {
         if (isMounted) {

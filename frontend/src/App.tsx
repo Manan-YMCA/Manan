@@ -4,7 +4,6 @@ import "./App.css";
 import BackgroundLayout from "./components/Shared/BackgroundLayout";
 import Navbar from "./components/Shared/Navbar";
 import Footer from "./components/Shared/Footer";
-import CustomButton from "./components/Shared/CustomButton";
 import ErrorModal from "./components/Shared/ErrorModal";
 import LoadingScreen from "./components/Shared/LoadingScreen";
 import { authEnabled, signOut, useSession } from "./lib/auth-client";
@@ -102,20 +101,9 @@ function App() {
           user={!profileLoading && user}
           profileExists={!profileLoading ? profileExists : undefined}
           permission={permission}
-          onClick={() => {
-            window.location.href = "/member-login";
-          }}
+          loginPath="/member-login"
           onSignOut={handleSignOut}
-        >
-          <CustomButton
-            onClick={() => {
-              window.location.href = "/member-login";
-            }}
-            className="hidden md:block pr-3"
-          >
-            Member Login
-          </CustomButton>
-        </Navbar>
+        />
         <BackgroundLayout />
         {pageError && (
           <ErrorModal
