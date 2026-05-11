@@ -15,7 +15,7 @@ export const auth = betterAuth({
   appName: "Manan Website",
   baseURL: env.BETTER_AUTH_URL,
   secret: env.BETTER_AUTH_SECRET,
-  trustedOrigins: [env.FRONTEND_URL],
+  trustedOrigins: env.FRONTEND_URL_LIST,
   database: drizzleAdapter(db, {
     provider: "pg",
     schema,

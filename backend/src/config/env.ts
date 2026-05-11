@@ -6,6 +6,7 @@ dotenv.config();
 const envSchema = z.object({
   PORT: z.coerce.number().default(4000),
   FRONTEND_URL: z.string().url().default("http://localhost:5173"),
+  FRONTEND_URLS: z.string().default(""),
   BETTER_AUTH_URL: z.string().url().default("http://localhost:4000"),
   BETTER_AUTH_SECRET: z.string().min(16),
   DATABASE_URL: z.string().min(1),
@@ -20,8 +21,16 @@ const envSchema = z.object({
 
 const parsedEnv = envSchema.parse(process.env);
 
+const frontendUrlList = [
+  parsedEnv.FRONTEND_URL,
+  ...parsedEnv.FRONTEND_URLS.split(","),
+]
+  .map((item) => item.trim())
+  .filter(Boolean);
+
 export const env = {
   ...parsedEnv,
+  FRONTEND_URL_LIST: [...new Set(frontendUrlList)],
   ALLOWED_USER_EMAILS_LIST: parsedEnv.ALLOWED_USER_EMAILS.split(",")
     .map((item) => item.trim().toLowerCase())
     .filter(Boolean),
