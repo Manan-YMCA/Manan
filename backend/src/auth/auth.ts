@@ -11,6 +11,8 @@ import { getRoleForEmail, isAllowedEmail, normalizeEmail } from "./role-resolver
 const resend = env.RESEND_API_KEY ? new Resend(env.RESEND_API_KEY) : null;
 const resendFromEmail = env.RESEND_FROM_EMAIL?.trim();
 const useCrossSiteCookies = env.BETTER_AUTH_URL.startsWith("https://");
+const fallbackNameFromEmail = (email: string) =>
+  normalizeEmail(email).split("@")[0] || "member";
 
 export const auth = betterAuth({
   appName: "Manan Website",
@@ -118,6 +120,7 @@ export const auth = betterAuth({
             data: {
               ...user,
               email,
+              name: user.name?.trim() || fallbackNameFromEmail(email),
               emailVerified: true,
               role: getRoleForEmail(email),
             },

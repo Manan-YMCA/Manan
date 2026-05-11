@@ -15,7 +15,6 @@ import {
 const initialState = {
   email: "",
   otp: "",
-  name: "",
 };
 
 const MemberLogin = () => {
@@ -74,15 +73,21 @@ const MemberLogin = () => {
       const { error: authError } = await verifyLoginOtp({
         email: formState.email.trim(),
         otp: formState.otp.trim(),
-        name: formState.name.trim() || undefined,
       });
 
       if (authError) {
         throw new Error(authError.message || "Invalid OTP.");
       }
 
-      await refetch();
-      navigate("/complete-profile", { replace: true });
+      const refreshedSession: any = await refetch();
+      const nextRole =
+        refreshedSession?.data?.user?.role ||
+        refreshedSession?.data?.data?.user?.role ||
+        null;
+
+      navigate(nextRole === "admin" ? "/add-events" : "/complete-profile", {
+        replace: true,
+      });
     } catch (requestError: any) {
       setError(requestError?.message || "Unable to verify OTP.");
     } finally {
@@ -112,7 +117,7 @@ const MemberLogin = () => {
                   ? "Backend preview mode is active. Enable backend auth to continue."
                   : step === "email"
                     ? "Enter your allowed email address to receive a one-time login code."
-                    : "Enter the OTP sent to your email. On first login, you can also add your name."}
+                    : "Enter the OTP sent to your email to continue."}
               </p>
             </div>
 
@@ -154,46 +159,25 @@ const MemberLogin = () => {
               </div>
 
               {step === "otp" && (
-                <React.Fragment>
-                  <div>
-                    <label
-                      htmlFor="member-login-otp"
-                      className="mb-2 block text-sm font-semibold text-gray-700"
-                    >
-                      OTP
-                    </label>
-                    <input
-                      id="member-login-otp"
-                      name="otp"
-                      type="text"
-                      inputMode="numeric"
-                      value={formState.otp}
-                      onChange={handleChange}
-                      disabled={loading}
-                      placeholder="Enter OTP"
-                      className="w-full rounded-xl border border-gray-300 bg-white px-4 py-3 text-[18px] text-gray-900 outline-none transition focus:border-[#FB5343] focus:ring-2 focus:ring-[#FB5343]/20 disabled:bg-gray-100"
-                    />
-                  </div>
-
-                  <div>
-                    <label
-                      htmlFor="member-login-name"
-                      className="mb-2 block text-sm font-semibold text-gray-700"
-                    >
-                      Name (first login only)
-                    </label>
-                    <input
-                      id="member-login-name"
-                      name="name"
-                      type="text"
-                      value={formState.name}
-                      onChange={handleChange}
-                      disabled={loading}
-                      placeholder="Your full name"
-                      className="w-full rounded-xl border border-gray-300 bg-white px-4 py-3 text-[18px] text-gray-900 outline-none transition focus:border-[#FB5343] focus:ring-2 focus:ring-[#FB5343]/20 disabled:bg-gray-100"
-                    />
-                  </div>
-                </React.Fragment>
+                <div>
+                  <label
+                    htmlFor="member-login-otp"
+                    className="mb-2 block text-sm font-semibold text-gray-700"
+                  >
+                    OTP
+                  </label>
+                  <input
+                    id="member-login-otp"
+                    name="otp"
+                    type="text"
+                    inputMode="numeric"
+                    value={formState.otp}
+                    onChange={handleChange}
+                    disabled={loading}
+                    placeholder="Enter OTP"
+                    className="w-full rounded-xl border border-gray-300 bg-white px-4 py-3 text-[18px] text-gray-900 outline-none transition focus:border-[#FB5343] focus:ring-2 focus:ring-[#FB5343]/20 disabled:bg-gray-100"
+                  />
+                </div>
               )}
             </div>
           ) : (
@@ -212,7 +196,7 @@ const MemberLogin = () => {
                 <CustomButton
                   onClick={() => {
                     setStep("email");
-                    setFormState((prev) => ({ ...prev, otp: "", name: "" }));
+                    setFormState((prev) => ({ ...prev, otp: "" }));
                     setSuccessMessage("");
                   }}
                 >

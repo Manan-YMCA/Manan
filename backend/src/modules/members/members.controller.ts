@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from "express";
-import { successResponse } from "../../utils/api-response.js";
+import { errorResponse, successResponse } from "../../utils/api-response.js";
 import { AuthenticatedRequest } from "../../middleware/require-session.js";
 import { memberPayloadSchema } from "./members.validation.js";
 import { membersService } from "./members.service.js";
@@ -40,6 +40,12 @@ export const membersController = {
   async getMyProfile(req: Request, res: Response, next: NextFunction) {
     try {
       const authenticatedRequest = req as AuthenticatedRequest;
+
+      if (authenticatedRequest.auth.user.role === "admin") {
+        res.json(successResponse("Admins do not have member profiles.", null));
+        return;
+      }
+
       const profile = await membersService.getMemberByUserId(
         authenticatedRequest.auth.user.id
       );
@@ -57,6 +63,14 @@ export const membersController = {
   async createMyProfile(req: Request, res: Response, next: NextFunction) {
     try {
       const authenticatedRequest = req as AuthenticatedRequest;
+
+      if (authenticatedRequest.auth.user.role === "admin") {
+        res
+          .status(403)
+          .json(errorResponse("Admins cannot create member profiles."));
+        return;
+      }
+
       const payload = memberPayloadSchema.parse(req.body);
       const result = await membersService.saveMemberForUser(
         {
@@ -84,6 +98,14 @@ export const membersController = {
   async updateMyProfile(req: Request, res: Response, next: NextFunction) {
     try {
       const authenticatedRequest = req as AuthenticatedRequest;
+
+      if (authenticatedRequest.auth.user.role === "admin") {
+        res
+          .status(403)
+          .json(errorResponse("Admins cannot update member profiles."));
+        return;
+      }
+
       const payload = memberPayloadSchema.parse(req.body);
       const result = await membersService.saveMemberForUser(
         {

@@ -43,6 +43,11 @@ export default function Navbar(props) {
 
   useEffect(() => {
     const routesHandler = (loggedInUser, profileData) => {
+      if (loggedInUser && permission === "admin") {
+        setRoutes(normalRoutes);
+        return;
+      }
+
       if (loggedInUser && !profileData) {
         setRoutes(profileDoesNotExistsRoutes);
       } else if (loggedInUser && profileData) {
@@ -52,7 +57,7 @@ export default function Navbar(props) {
       }
     };
     routesHandler(user, profileExists);
-  }, [user, profileExists]);
+  }, [user, profileExists, permission]);
 
   return (
     <Disclosure

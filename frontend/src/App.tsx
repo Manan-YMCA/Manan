@@ -41,6 +41,14 @@ function App() {
         return;
       }
 
+      if (user.role === "admin") {
+        if (isMounted) {
+          setProfileData(null);
+          setProfileLoading(false);
+        }
+        return;
+      }
+
       try {
         setProfileLoading(true);
         const response = await api.get("/members/me");
@@ -122,7 +130,9 @@ function App() {
             {user && profileExists !== undefined && (
               <Route
                 path="/complete-profile"
-                element={
+                element={permission === "admin" ? (
+                  <Navigate to="/add-events" replace />
+                ) : (
                   <CompleteProfile
                     user={user}
                     profileData={profileExists || null}
@@ -132,19 +142,29 @@ function App() {
                       setProfileData(response.data.data ?? null);
                     }}
                   />
-                }
+                )}
               />
             )}
             {user && (
               <Route
                 path="/add-profile"
-                element={<Navigate to="/complete-profile" replace />}
+                element={
+                  <Navigate
+                    to={permission === "admin" ? "/add-events" : "/complete-profile"}
+                    replace
+                  />
+                }
               />
             )}
             {user && (
               <Route
                 path="/edit-profile"
-                element={<Navigate to="/complete-profile" replace />}
+                element={
+                  <Navigate
+                    to={permission === "admin" ? "/add-events" : "/complete-profile"}
+                    replace
+                  />
+                }
               />
             )}
             {permission === "admin" && (
