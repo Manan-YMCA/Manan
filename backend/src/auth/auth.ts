@@ -10,12 +10,20 @@ import { getRoleForEmail, isAllowedEmail, normalizeEmail } from "./role-resolver
 
 const resend = env.RESEND_API_KEY ? new Resend(env.RESEND_API_KEY) : null;
 const resendFromEmail = env.RESEND_FROM_EMAIL?.trim();
+const useCrossSiteCookies = env.BETTER_AUTH_URL.startsWith("https://");
 
 export const auth = betterAuth({
   appName: "Manan Website",
   baseURL: env.BETTER_AUTH_URL,
   secret: env.BETTER_AUTH_SECRET,
   trustedOrigins: env.FRONTEND_URL_LIST,
+  advanced: {
+    useSecureCookies: useCrossSiteCookies,
+    defaultCookieAttributes: {
+      sameSite: useCrossSiteCookies ? "none" : "lax",
+      secure: useCrossSiteCookies,
+    },
+  },
   database: drizzleAdapter(db, {
     provider: "pg",
     schema,
