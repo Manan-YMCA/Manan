@@ -1,37 +1,20 @@
-import dotenv from "dotenv";
 import { z } from "zod";
 
-dotenv.config();
-
 const envSchema = z.object({
-  PORT: z.coerce.number().default(4000),
-  FRONTEND_URL: z.string().url().default("http://localhost:5173"),
-  FRONTEND_URLS: z.string().default(""),
-  BETTER_AUTH_URL: z.string().url().default("http://localhost:4000"),
+  PORT: z.number().default(4000),
+  FRONTEND_URL: z.url(),
+  TRUSTED_ORIGINS: z.array(z.url()),
+  BETTER_AUTH_URL: z.url(),
   BETTER_AUTH_SECRET: z.string().min(16),
   DATABASE_URL: z.string().min(1),
-  ADMIN_EMAIL: z.string().email().default("xyz@gmail.com"),
-  ALLOWED_USER_EMAILS: z.string().default(""),
-  RESEND_API_KEY: z.string().optional(),
-  RESEND_FROM_EMAIL: z.string().optional(),
-  CLOUDINARY_CLOUD_NAME: z.string().optional(),
-  CLOUDINARY_API_KEY: z.string().optional(),
-  CLOUDINARY_API_SECRET: z.string().optional(),
+  ADMIN_EMAIL: z.email(),
+  RESEND_API_KEY: z.string(),
+  RESEND_FROM_EMAIL: z.string(),
+  CLOUDINARY_CLOUD_NAME: z.string(),
+  CLOUDINARY_API_KEY: z.string(),
+  CLOUDINARY_API_SECRET: z.string(),
 });
 
-const parsedEnv = envSchema.parse(process.env);
+export const env = envSchema.parse(process.env);
 
-const frontendUrlList = [
-  parsedEnv.FRONTEND_URL,
-  ...parsedEnv.FRONTEND_URLS.split(","),
-]
-  .map((item) => item.trim())
-  .filter(Boolean);
 
-export const env = {
-  ...parsedEnv,
-  FRONTEND_URL_LIST: [...new Set(frontendUrlList)],
-  ALLOWED_USER_EMAILS_LIST: parsedEnv.ALLOWED_USER_EMAILS.split(",")
-    .map((item) => item.trim().toLowerCase())
-    .filter(Boolean),
-};
