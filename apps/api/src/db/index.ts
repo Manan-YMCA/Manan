@@ -3,9 +3,6 @@ import { drizzle } from "drizzle-orm/postgres-js";
 import { env } from "../config/env.js";
 import * as schema from "./schema/index.js";
 
-const sql = postgres(env.DATABASE_URL, {
-  prepare: false,
-});
+const sql = postgres(env.DATABASE_URL);
 
 export const db = drizzle(sql, { schema });
-export { sql };

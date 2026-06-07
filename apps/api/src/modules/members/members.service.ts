@@ -5,47 +5,6 @@ import { memberProfiles } from "../../db/schema/index.js";
 export type MemberRecord = typeof memberProfiles.$inferSelect;
 export type MemberInsert = typeof memberProfiles.$inferInsert;
 
-const sortMembers = (members: MemberRecord[]) =>
-  [...members].sort((left, right) => {
-    const leftYear = left.passOutYear ??
-      (left.batchDate
-      ? new Date(`${left.batchDate}T00:00:00`).getFullYear()
-      : left.admission);
-    const rightYear = right.passOutYear ??
-      (right.batchDate
-      ? new Date(`${right.batchDate}T00:00:00`).getFullYear()
-      : right.admission);
-
-    if (leftYear !== rightYear) {
-      return leftYear - rightYear;
-    }
-
-    return left.name.localeCompare(right.name);
-  });
-
-const dedupeMembers = (members: MemberRecord[]) => {
-  const latestByIdentity = new Map<string, MemberRecord>();
-
-  for (const member of members) {
-    const identityKey = member.userId || member.email;
-    const current = latestByIdentity.get(identityKey);
-
-    if (!current) {
-      latestByIdentity.set(identityKey, member);
-      continue;
-    }
-
-    const currentTime = new Date(current.updatedAt ?? current.createdAt).getTime();
-    const nextTime = new Date(member.updatedAt ?? member.createdAt).getTime();
-
-    if (nextTime >= currentTime) {
-      latestByIdentity.set(identityKey, member);
-    }
-  }
-
-  return sortMembers(Array.from(latestByIdentity.values()));
-};
-
 export const membersService = {
   async listMembers() {
     const members = await db
@@ -53,7 +12,7 @@ export const membersService = {
       .from(memberProfiles)
       .orderBy(asc(memberProfiles.admission), asc(memberProfiles.name));
 
-    return dedupeMembers(members);
+    return members;
   },
 
   async getMemberByUserId(userId: string) {
@@ -61,9 +20,9 @@ export const membersService = {
       .select()
       .from(memberProfiles)
       .where(eq(memberProfiles.userId, userId))
-      .orderBy(desc(memberProfiles.updatedAt), desc(memberProfiles.createdAt));
+      .limit(1);
 
-    return members[0] ?? null;
+    return members;
   },
 
   async saveMemberForUser(

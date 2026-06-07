@@ -6,8 +6,7 @@ export const gallery = pgTable("gallery", {
     .$defaultFn(() => crypto.randomUUID()),
   name: text("name").notNull(),
   desc: text("desc").notNull(),
-  image: text("image").notNull(),
-  imagePublicId: text("image_public_id"),
+  imageUrl: text("image").notNull(),
   timestamp: timestamp("timestamp", { withTimezone: true }).notNull().defaultNow(),
   updatedAt: timestamp("updated_at", { withTimezone: true }).notNull().defaultNow(),
 });
