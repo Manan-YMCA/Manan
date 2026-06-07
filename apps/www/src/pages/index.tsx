@@ -19,7 +19,7 @@ export function Home() {
       </section>
 
       <div className="px-4 pb-32 sm:px-8 md:px-12 lg:px-20 py-20">
-        <div className="rounded-2xl border border-black/10 bg-black/5 dark:border-white/10 dark:bg-white/5 p-8 backdrop-blur-sm text-gray-700 dark:text-gray-200 text-lg md:text-xl font-medium leading-relaxed">
+        <div className="rounded-2xl border border-black/10 bg-white/60 dark:border-white/10 dark:bg-white/5 p-8 backdrop-blur-sm text-gray-700 dark:text-gray-200 text-lg md:text-xl font-medium leading-relaxed">
           <p>
             <strong className="text-black dark:text-white">
               We are the Technical Society of YMCA University of Science and Technology
@@ -49,7 +49,7 @@ export function Home() {
               />
             </div>
             <div className="flex flex-1 items-center justify-center px-4 md:px-8">
-              <div className="rounded-2xl border border-black/10 bg-black/5 dark:border-white/10 dark:bg-white/5 px-6 py-5 backdrop-blur-sm">
+              <div className="rounded-2xl border border-black/10 bg-white/60 dark:border-white/10 dark:bg-white/5 px-6 py-5 backdrop-blur-sm">
                 <p className="text-lg font-medium text-gray-700 dark:text-gray-200 md:text-2xl">
                   <span className="flex items-center gap-2 text-[#FB5343] font-bold text-2xl md:text-4xl mb-2">
                     {item.title}
