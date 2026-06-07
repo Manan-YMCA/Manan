@@ -14,8 +14,7 @@ export const userProfile = pgTable("userProfiles", {
   techStack: text("tech_stack").notNull(),
   languages: text("languages").notNull(),
   otherSkills: text("other_skills").notNull(),
-  bannerUrl: text("banner").notNull(),
-  pfpUrl: text("pfp").notNull(),
+  bannerUrl: text("banner_url").notNull(),
   socialLinks: jsonb("social_links").notNull().default([]),
   createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
   updatedAt: timestamp("updated_at", { withTimezone: true }).notNull().defaultNow()
