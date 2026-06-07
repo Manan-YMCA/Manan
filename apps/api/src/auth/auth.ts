@@ -6,7 +6,7 @@ import { Resend } from "resend";
 import { db } from "../db/index.js";
 import * as schema from "../db/schema/index.js";
 import { env } from "../config/env.js";
-import { getRoleForEmail, isAllowedEmail, normalizeEmail } from "./role-resolver.js";
+import { isAdminEmail, normalizeEmail } from "./role-resolver.js";
 
 const resend = new Resend(env.RESEND_API_KEY)
 const resendFromEmail = env.RESEND_FROM_EMAIL;
@@ -86,7 +86,7 @@ export const auth = betterAuth({
       }
 
       const email = normalizeEmail(String(ctx.body?.email || ""));
-      if (!isAllowedEmail(email)) {
+      if (!isAdminEmail(email)) {
         throw new APIError("BAD_REQUEST", {
           message: "You're not authorized as club member :(",
         });
@@ -95,22 +95,12 @@ export const auth = betterAuth({
   },
   databaseHooks: {
     user: {
-      create: {
+      update: {
         before: async (user) => {
-          const email = normalizeEmail(user.email);
-          if (!isAllowedEmail(email)) {
-            throw new Error("Unauthorized email.");
+          if (user.role === "admin") {
+            throw new Error("Admin role cannot be assigned via API.");
           }
-
-          return {
-            data: {
-              ...user,
-              email,
-              name: user.name?.trim(),
-              emailVerified: true,
-              role: getRoleForEmail(email),
-            },
-          };
+          return { data: user };
         },
       },
     },
