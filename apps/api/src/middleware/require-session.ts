@@ -1,4 +1,5 @@
 import { NextFunction, Request, Response } from "express";
+import { fromNodeHeaders } from "better-auth/node";
 import { auth } from "../auth/auth.js";
 import { errorResponse } from "../utils/api-response.js";
 
@@ -10,19 +11,13 @@ export type AuthenticatedRequest = Request & {
   auth: AuthSession;
 };
 
-const createHeaders = (req: Request) => {
-  const headers = new Headers();
-
-  Object.entries(req.headers).forEach(([key, value]) => {
-    if (Array.isArray(value)) {
-      headers.set(key, value.join(","));
-    } else if (value) {
-      headers.set(key, value);
+declare global {
+  namespace Express {
+    interface Request {
+      auth?: AuthSession;
     }
-  });
-
-  return headers;
-};
+  }
+}
 
 export const requireSession = async (
   req: Request,
@@ -31,17 +26,15 @@ export const requireSession = async (
 ) => {
   try {
     const session = await auth.api.getSession({
-      headers: createHeaders(req),
+      headers: fromNodeHeaders(req.headers),
     });
-
-    if (!session?.user || !session?.session) {
-      res.status(401).json(errorResponse("Unauthorized"));
-      return;
+    if (!session) {
+      return res.status(401).json(errorResponse("Unauthorized"));
     }
 
-    (req as AuthenticatedRequest).auth = session;
+    req.auth = session;
     next();
   } catch (error) {
-    res.status(401).json(errorResponse("Unauthorized"));
+    return res.status(401).json(errorResponse("Unauthorized"));
   }
 };
