@@ -2,9 +2,12 @@ import { useState } from "react";
 import { NavLink } from "react-router";
 import mananLogo from "@/assets/manan.svg";
 import { ListIcon } from "@phosphor-icons/react";
+import { authClient } from "@/lib/auth-client";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@/components/ui/sheet";
 import { ThemeToggle } from "@/components/ThemeToggle";
+import { UserMenu } from "@/components/UserMenu";
 
 const links = [
   { to: "/members", label: "Members" },
@@ -14,6 +17,7 @@ const links = [
 
 export function Navbar() {
   const [open, setOpen] = useState(false);
+  const { data: session } = authClient.useSession();
 
   return (
     <nav className="fixed top-0 inset-x-0 z-50 flex items-center justify-between px-6 py-4 bg-white/40 dark:bg-black/50 backdrop-blur-lg border-b border-black/10 dark:border-white/10">
@@ -40,10 +44,9 @@ export function Navbar() {
 
       <div className="flex items-center gap-3">
         <ThemeToggle />
-        <Button variant="outline" size="sm" asChild className="hidden md:inline-flex">
-          <NavLink to="/login">Login</NavLink>
-        </Button>
-
+        <div className="hidden md:block">
+          <UserMenu />
+        </div>
         <button
           className="md:hidden text-black/60 dark:text-white/60 hover:text-black dark:hover:text-white transition-colors"
           onClick={() => setOpen(true)}
@@ -78,9 +81,27 @@ export function Navbar() {
             ))}
           </ul>
           <div className="absolute bottom-6 left-4 right-4">
-            <Button variant="outline" size="sm" asChild className="w-full">
-              <NavLink to="/login" onClick={() => setOpen(false)}>Login</NavLink>
-            </Button>
+            {session ? (
+              <div className="space-y-2">
+                <div className="flex items-center gap-2 px-1">
+                  <Avatar className="size-7">
+                    <AvatarImage src={session.user.image || `https://avatar.vercel.sh/${encodeURIComponent(session.user.name)}`} />
+                    <AvatarFallback>{session.user.name.slice(0, 2).toUpperCase()}</AvatarFallback>
+                  </Avatar>
+                  <span className="text-sm font-medium truncate">{session.user.name}</span>
+                </div>
+                <Button variant="outline" size="sm" asChild className="w-full">
+                  {session.user.role === "admin"
+                    ? <NavLink to="/admin" onClick={() => setOpen(false)}>Admin page</NavLink>
+                    : <NavLink to="/profile/edit" onClick={() => setOpen(false)}>Edit profile</NavLink>
+                  }
+                </Button>
+              </div>
+            ) : (
+              <Button variant="outline" size="sm" asChild className="w-full">
+                <NavLink to="/login" onClick={() => setOpen(false)}>Login</NavLink>
+              </Button>
+            )}
           </div>
         </SheetContent>
       </Sheet>
