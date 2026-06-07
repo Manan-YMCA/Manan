@@ -3,19 +3,17 @@ import { createAuthMiddleware, APIError } from "better-auth/api";
 import { drizzleAdapter } from "@better-auth/drizzle-adapter";
 import { admin, emailOTP } from "better-auth/plugins";
 import { Resend } from "resend";
+import { eq } from "drizzle-orm";
 import { db } from "../db/index.js";
 import * as schema from "../db/schema/index.js";
 import { env } from "../config/env.js";
-import { isAdminEmail, normalizeEmail } from "./role-resolver.js";
 
 const resend = new Resend(env.RESEND_API_KEY)
 const resendFromEmail = env.RESEND_FROM_EMAIL;
 
 export const auth = betterAuth({
   appName: "Manan",
-  baseURL: env.BETTER_AUTH_URL,
-  secret: env.BETTER_AUTH_SECRET,
-  trustedOrigins: env.TRUSTED_ORIGINS,
+  trustedOrigins: [env.FRONTEND_URL, env.TRUSTED_ORIGINS],
   database: drizzleAdapter(db, {
     provider: "pg",
     schema,
@@ -85,8 +83,14 @@ export const auth = betterAuth({
         return;
       }
 
-      const email = normalizeEmail(String(ctx.body?.email || ""));
-      if (!isAdminEmail(email)) {
+      if (!ctx.body.email) return;
+      const [existing] = await db
+        .select({ id: schema.users.id })
+        .from(schema.users)
+        .where(eq(schema.users.email, ctx.body.email))
+        .limit(1);
+
+      if (!existing) {
         throw new APIError("BAD_REQUEST", {
           message: "You're not authorized as club member :(",
         });
