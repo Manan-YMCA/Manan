@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { NavLink } from "react-router";
+import mananLogo from "@/assets/manan.svg";
 import { ListIcon } from "@phosphor-icons/react";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@/components/ui/sheet";
@@ -15,8 +16,9 @@ export function Navbar() {
   const [open, setOpen] = useState(false);
 
   return (
-    <nav className="fixed top-0 inset-x-0 z-50 flex items-center justify-between px-6 py-4 bg-black/5 dark:bg-white/5 backdrop-blur-sm border-b border-black/10 dark:border-white/10">
-      <NavLink to="/" className="text-black dark:text-white font-bold text-xl tracking-tight">
+    <nav className="fixed top-0 inset-x-0 z-50 flex items-center justify-between px-6 py-4 bg-white/40 dark:bg-black/50 backdrop-blur-lg border-b border-black/10 dark:border-white/10">
+      <NavLink to="/" className="flex items-center gap-2 text-black dark:text-white font-bold text-xl tracking-tight">
+        <img src={mananLogo} alt="Manan logo" className="size-7" />
         Manan
       </NavLink>
 
@@ -54,7 +56,10 @@ export function Navbar() {
       <Sheet open={open} onOpenChange={setOpen}>
         <SheetContent side="right" className="w-64 bg-white/70 dark:bg-black/70 backdrop-blur-md border-black/10 dark:border-white/10 text-black dark:text-white">
           <SheetHeader className="border-b border-black/10 dark:border-white/10 pb-4">
-            <SheetTitle className="text-black dark:text-white font-bold text-lg">Manan</SheetTitle>
+            <SheetTitle className="flex items-center gap-2 text-black dark:text-white font-bold text-lg">
+              <img src={mananLogo} alt="Manan logo" className="size-6" />
+              Manan
+            </SheetTitle>
           </SheetHeader>
           <ul className="mt-4 flex flex-col gap-1 px-2">
             {links.map(({ to, label }) => (
