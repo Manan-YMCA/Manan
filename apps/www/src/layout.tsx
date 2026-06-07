@@ -1,4 +1,5 @@
 import { Outlet } from "react-router";
+import { Toaster } from "sonner";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -12,6 +13,7 @@ export function Layout() {
           <Outlet />
         </main>
         <Footer />
+        <Toaster richColors position="top-right" />
       </div>
     </TooltipProvider>
   );
