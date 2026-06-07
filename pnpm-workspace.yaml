@@ -6,4 +6,5 @@ allowBuilds:
   better-sqlite3: true
   core-js: true
   esbuild: true
+  msw: true
   unrs-resolver: true
