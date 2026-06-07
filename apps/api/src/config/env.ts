@@ -3,7 +3,10 @@ import { z } from "zod";
 const envSchema = z.object({
   PORT: z.number().default(4000),
   FRONTEND_URL: z.url(),
-  TRUSTED_ORIGINS: z.array(z.url()),
+  TRUSTED_ORIGINS: z.preprocess(
+    (v) => String(v).split(",").map((s) => s.trim()).filter(Boolean),
+    z.array(z.url())
+  ),
   BETTER_AUTH_URL: z.url(),
   BETTER_AUTH_SECRET: z.string().min(16),
   DATABASE_URL: z.string().min(1),
