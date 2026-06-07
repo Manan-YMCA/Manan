@@ -1,0 +1,59 @@
+# Manan Website
+Monorepo for the Manan website. Contains two apps:
+- `apps/www`: website - react
+- `apps/api`: backend - express + better-auth + drizzle + postgres
+
+## Setup
+```sh
+pnpm install
+
+cp apps/api/.env.example apps/api/.env
+cp apps/www/.env.example apps/www/.env
+
+cd apps/api && pnpm db:migrate
+```
+
+## Seeding the Admin User
+The admin account is **not auto-created**. It must be inserted directly into the database once after the first migration. There is no seed script by design. The only way to have admin role is via direct DB insertion by design.
+
+Run the following SQL against your Neon database:
+```sql
+-- step 1: create the auth user
+INSERT INTO "user" (id, name, email, email_verified, role, banned, created_at, updated_at)
+VALUES (
+  gen_random_uuid()::text,
+  'Manan',
+  'manantechnosurge@gmail.com',
+  true,
+  'admin',
+  false,
+  now(),
+  now()
+);
+
+-- step 2: create the profile linked to that user
+INSERT INTO "userProfiles" (
+  id, user_id, admission_year, roll_number, graduation_year,
+  designation, tech_stack, languages, other_skills,
+  banner_url, pfp_url, social_links, created_at, updated_at
+)
+SELECT
+  gen_random_uuid()::text,
+  id,
+  2009,
+  NULL,
+  NULL,
+  'Admin',
+  '',
+  '',
+  '',
+  '',
+  '',
+  '[]'::jsonb,
+  now(),
+  now()
+FROM "user"
+WHERE email = 'manantechnosurge@gmail.com';
+```
+
+After this, log in at `/login` using `manantechnosurge@gmail.com` via OTP. The user already exists in the DB so better-auth will authenticate against the existing row without creating a new one.
