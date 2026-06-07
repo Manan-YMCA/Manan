@@ -8,32 +8,18 @@ import * as schema from "../db/schema/index.js";
 import { env } from "../config/env.js";
 import { getRoleForEmail, isAllowedEmail, normalizeEmail } from "./role-resolver.js";
 
-const resend = env.RESEND_API_KEY ? new Resend(env.RESEND_API_KEY) : null;
-const resendFromEmail = env.RESEND_FROM_EMAIL?.trim();
-const useCrossSiteCookies = env.BETTER_AUTH_URL.startsWith("https://");
-const fallbackNameFromEmail = (email: string) =>
-  normalizeEmail(email).split("@")[0] || "member";
+const resend = new Resend(env.RESEND_API_KEY)
+const resendFromEmail = env.RESEND_FROM_EMAIL;
 
 export const auth = betterAuth({
-  appName: "Manan Website",
+  appName: "Manan",
   baseURL: env.BETTER_AUTH_URL,
   secret: env.BETTER_AUTH_SECRET,
-  trustedOrigins: env.FRONTEND_URL_LIST,
-  advanced: {
-    useSecureCookies: useCrossSiteCookies,
-    defaultCookieAttributes: {
-      sameSite: useCrossSiteCookies ? "none" : "lax",
-      secure: useCrossSiteCookies,
-    },
-  },
+  trustedOrigins: env.TRUSTED_ORIGINS,
   database: drizzleAdapter(db, {
     provider: "pg",
     schema,
   }),
-  session: {
-    expiresIn: 60 * 60 * 24 * 7,
-    updateAge: 60 * 60 * 24,
-  },
   plugins: [
     admin({
       defaultRole: "user",
@@ -120,7 +106,7 @@ export const auth = betterAuth({
             data: {
               ...user,
               email,
-              name: user.name?.trim() || fallbackNameFromEmail(email),
+              name: user.name?.trim(),
               emailVerified: true,
               role: getRoleForEmail(email),
             },
