@@ -2,9 +2,11 @@ import { useEffect, useState } from "react";
 import { MoonIcon, SunIcon } from "@phosphor-icons/react";
 
 export function ThemeToggle() {
-  const [dark, setDark] = useState(() =>
-    document.documentElement.classList.contains("dark")
-  );
+  const [dark, setDark] = useState(() => {
+    const saved = localStorage.getItem("theme");
+    if (saved) return saved === "dark";
+    return window.matchMedia("(prefers-color-scheme: dark)").matches;
+  });
 
   useEffect(() => {
     document.documentElement.classList.toggle("dark", dark);
