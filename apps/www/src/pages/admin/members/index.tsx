@@ -13,7 +13,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { AdminPagination } from "@/components/admin-pagination";
-import { columns } from "./columns";
+import { columns } from "@/components/members/columns";
 
 export function AdminMembers() {
   const [page, setPage] = useState(1);
