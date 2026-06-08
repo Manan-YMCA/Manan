@@ -1,31 +1,51 @@
-import { MemberCard, type Member } from "@/components/MemberCard";
-
-export type MemberWithYear = Member & { admission: string };
-
-const members: MemberWithYear[] = [];
-
-const years = [...new Set(members.map((m) => m.admission))].sort().reverse();
+import { usePublicMembers } from "@/hooks/use-members";
+import { MemberCard } from "@/components/members/MemberCard";
+import { MemberSkeleton } from "@/components/members/MemberSkeleton";
 
 export function Members() {
+  const { data: members = [], isLoading } = usePublicMembers();
+
+  const years = [...new Set(members.map((m) => m.admissionYear))].sort().reverse();
+
   return (
     <div className="px-4 sm:px-8 md:px-12 lg:px-20 py-12 pb-32">
-      <h1 className="text-4xl font-bold text-black dark:text-white mb-2">Members</h1>
-      <p className="text-black/50 dark:text-white/50 mb-12">The people behind Manan.</p>
+      <h1 className="text-4xl font-bold mb-2">Members</h1>
+      <p className="text-muted-foreground mb-12">The people behind Manan.</p>
 
-      {years.map((year) => (
-        <div key={year} className="mb-16">
-          <div className="flex items-center gap-3 pl-4 border-l-4 border-[#FB5343] mb-8">
-            <span className="text-3xl font-bold text-[#FB5343]">{year}</span>
-          </div>
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-            {members
-              .filter((m) => m.admission === year)
-              .map((member) => (
-                <MemberCard key={member.name} member={member} />
-              ))}
-          </div>
+      {isLoading ? (
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+          {Array.from({ length: 4 }).map((_, i) => <MemberSkeleton key={i} />)}
         </div>
-      ))}
+      ) : members.length === 0 ? (
+        <p className="text-muted-foreground">No members yet.</p>
+      ) : (
+        years.map((year) => (
+          <div key={year} className="mb-16">
+            <div className="flex items-center gap-3 pl-4 border-l-4 border-[#FB5343] mb-8">
+              <span className="text-3xl font-bold text-[#FB5343]">{year}</span>
+            </div>
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+              {members
+                .filter((m) => m.admissionYear === year)
+                .map((member) => (
+                  <MemberCard
+                    key={member.id}
+                    member={{
+                      name: member.name,
+                      role: member.designation,
+                      pfp: member.image ?? `https://avatar.vercel.sh/${encodeURIComponent(member.name)}`,
+                      banner: member.bannerUrl,
+                      languages: member.languages,
+                      frameworks: member.techStack,
+                      otherSkills: member.otherSkills,
+                      socialLinks: member.socialLinks ?? [],
+                    }}
+                  />
+                ))}
+            </div>
+          </div>
+        ))
+      )}
     </div>
   );
 }
