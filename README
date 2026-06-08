@@ -10,7 +10,14 @@ pnpm install
 cp apps/api/.env.example apps/api/.env
 cp apps/www/.env.example apps/www/.env
 
-cd apps/api && pnpm db:migrate
+cd apps/api
+source .env
+pnpm db:migrate
+pnpm run dev
+
+cd apps/www
+source .env
+pnpm run dev
 ```
 
 ## Seeding the Admin User
