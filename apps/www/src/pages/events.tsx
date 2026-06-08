@@ -1,46 +1,6 @@
-import { useQuery } from "@tanstack/react-query";
-import { API_URL } from "@/lib/api";
-import { EventCard } from "@/components/EventCard";
-import { Skeleton } from "@/components/ui/skeleton";
-import { Card } from "@/components/ui/card";
-
-type ApiEvent = {
-  id: string;
-  name: string;
-  desc: string;
-  eventDate: string;
-  eventImage: string;
-  eventlinks: { activityReport: string; eventReport: string };
-  timestamp: string;
-};
-
-function useEvents() {
-  return useQuery({
-    queryKey: ["events"],
-    queryFn: async () => {
-      const res = await fetch(`${API_URL}/api/events?limit=100`)
-        .catch(() => { throw new Error("Network error"); });
-      const json = await res.json()
-        .catch(() => { throw new Error(`Request failed with status ${res.status}`); });
-      if (!res.ok) throw new Error(json.message ?? "Request failed");
-      return json.data.data as ApiEvent[];
-    },
-  });
-}
-
-function EventSkeleton() {
-  return (
-    <Card className="overflow-hidden">
-      <Skeleton className="aspect-video w-full" />
-      <div className="p-5 space-y-2">
-        <Skeleton className="h-5 w-48" />
-        <Skeleton className="h-3 w-24" />
-        <Skeleton className="h-3 w-full" />
-        <Skeleton className="h-3 w-3/4" />
-      </div>
-    </Card>
-  );
-}
+import { useEvents } from "@/hooks/use-events";
+import { EventCard } from "@/components/events/EventCard";
+import { EventSkeleton } from "@/components/events/EventSkeleton";
 
 export function Events() {
   const { data: events = [], isLoading } = useEvents();
