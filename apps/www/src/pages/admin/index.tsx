@@ -15,8 +15,8 @@ export function AdminDashboard() {
 
   return (
     <div className="space-y-6">
-    <h1 className="text-2xl font-bold">Overview</h1>
-    <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+      <h1 className="text-2xl font-bold">Overview</h1>
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
         {statCards.map(({ key, label, icon: Icon, to }) => (
           <NavLink key={key} to={to}>
             <Card className="hover:bg-accent transition-colors cursor-pointer">
@@ -38,7 +38,7 @@ export function AdminDashboard() {
             </Card>
           </NavLink>
         ))}
-    </div>
+      </div>
     </div>
   );
 }
