@@ -1,5 +1,5 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { apiFetch, apiDelete, apiPost } from "./api";
+import { apiFetch, apiDelete, apiPost } from "@/hooks/admin/api";
 import type { CreateGalleryInput, GalleryItem, GalleryPage } from "@/types/gallery";
 
 export function useAdminGallery(page = 1) {

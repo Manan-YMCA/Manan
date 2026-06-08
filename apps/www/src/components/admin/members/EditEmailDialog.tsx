@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { toast } from "sonner";
-import type { Member } from "@/hooks/admin";
+import type { Member } from "@/types/members";
 import { useUpdateMemberEmail } from "@/hooks/admin";
 import { Button } from "@/components/ui/button";
 import {

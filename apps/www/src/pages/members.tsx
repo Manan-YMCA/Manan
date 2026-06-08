@@ -49,3 +49,5 @@ export function Members() {
     </div>
   );
 }
+
+export default Members;

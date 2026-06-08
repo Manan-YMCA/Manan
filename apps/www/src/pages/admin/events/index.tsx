@@ -3,9 +3,9 @@ import { NavLink } from "react-router";
 import { PlusIcon } from "@phosphor-icons/react";
 import { useAdminEvents } from "@/hooks/admin";
 import { Button } from "@/components/ui/button";
-import { AdminPagination } from "@/components/admin-pagination";
-import { EventCard } from "@/components/events/card";
-import { EventCardSkeleton } from "@/components/events/EventCardSkeleton";
+import { AdminPagination } from "@/components/admin/admin-pagination";
+import { EventCard } from "@/components/admin/events/card";
+import { EventCardSkeleton } from "@/components/admin/events/EventCardSkeleton";
 
 export function AdminEvents() {
   const [page, setPage] = useState(1);
@@ -51,3 +51,5 @@ export function AdminEvents() {
     </div>
   );
 }
+
+export default AdminEvents;

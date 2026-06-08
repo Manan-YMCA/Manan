@@ -1,6 +1,6 @@
 import { useParams } from "react-router";
 import { useEvent } from "@/hooks/admin";
-import { EditEventForm } from "@/components/events/EditEventForm";
+import { EditEventForm } from "@/components/admin/events/EditEventForm";
 
 export function EditEvent() {
   const { id } = useParams<{ id: string }>();
@@ -19,3 +19,5 @@ export function EditEvent() {
     </div>
   );
 }
+
+export default EditEvent;

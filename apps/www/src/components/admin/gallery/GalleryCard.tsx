@@ -1,6 +1,7 @@
 import { DotsThreeIcon } from "@phosphor-icons/react";
 import { toast } from "sonner";
-import { useDeleteGalleryItem, type GalleryItem } from "@/hooks/admin";
+import type { GalleryItem } from "@/types/gallery";
+import { useDeleteGalleryItem } from "@/hooks/admin";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,

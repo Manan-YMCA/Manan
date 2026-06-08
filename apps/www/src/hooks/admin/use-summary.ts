@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { apiFetch } from "./api";
+import { apiFetch } from "@/hooks/admin/api";
 import type { AdminSummary } from "@/types/admin";
 
 export function useAdminSummary() {

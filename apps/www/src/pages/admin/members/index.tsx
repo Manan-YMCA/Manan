@@ -12,8 +12,8 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { AdminPagination } from "@/components/admin-pagination";
-import { columns } from "@/components/members/columns";
+import { AdminPagination } from "@/components/admin/admin-pagination";
+import { columns } from "@/components/admin/members/columns";
 
 export function AdminMembers() {
   const [page, setPage] = useState(1);
@@ -84,3 +84,5 @@ export function AdminMembers() {
     </div>
   );
 }
+
+export default AdminMembers;

@@ -49,3 +49,5 @@ export function Events() {
     </div>
   );
 }
+
+export default Events;

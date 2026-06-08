@@ -88,3 +88,5 @@ const features = [
     reverse: false,
   },
 ];
+
+export default Home;

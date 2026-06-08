@@ -2,8 +2,8 @@ import { Outlet } from "react-router";
 import { Toaster } from "sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
-import { AdminSidebar } from "@/components/AdminSidebar";
-import { AdminNavbar } from "@/components/AdminNavbar";
+import { AdminSidebar } from "@/components/admin/AdminSidebar";
+import { AdminNavbar } from "@/components/admin/AdminNavbar";
 
 export function AdminLayout() {
   return (
@@ -23,3 +23,5 @@ export function AdminLayout() {
     </TooltipProvider>
   );
 }
+
+export default AdminLayout;

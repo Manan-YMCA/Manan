@@ -1,12 +1,13 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { authClient } from "@/lib/auth-client";
-import { apiFetch, apiPatch } from "./api";
+import { apiFetch, apiPatch } from "@/hooks/admin/api";
 import type { CreateMemberInput, MembersPage } from "@/types/members";
 
 export function useMembers(page = 1) {
   return useQuery({
     queryKey: ["admin", "members", page],
     queryFn: () => apiFetch<MembersPage>(`/api/admin/members?page=${page}`),
+    initialData: { data: [], total: 0 },
   });
 }
 

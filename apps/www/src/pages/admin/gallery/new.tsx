@@ -1,4 +1,4 @@
-import { NewGalleryItemForm } from "@/components/gallery/NewGalleryItemForm";
+import { NewGalleryItemForm } from "@/components/admin/gallery/NewGalleryItemForm";
 
 export function NewGalleryItem() {
   return (
@@ -8,3 +8,5 @@ export function NewGalleryItem() {
     </div>
   );
 }
+
+export default NewGalleryItem;

@@ -1,4 +1,4 @@
-import { NewMemberForm } from "@/components/members/NewMemberForm";
+import { NewMemberForm } from "@/components/admin/members/NewMemberForm";
 
 export function NewMember() {
   return (
@@ -8,3 +8,5 @@ export function NewMember() {
     </div>
   );
 }
+
+export default NewMember;

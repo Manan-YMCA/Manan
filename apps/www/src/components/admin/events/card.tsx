@@ -1,7 +1,7 @@
 import { DotsThreeIcon } from "@phosphor-icons/react";
 import { NavLink } from "react-router";
 import { toast } from "sonner";
-import type { AdminEvent } from "@/hooks/admin";
+import type { AdminEvent } from "@/types/events";
 import { useDeleteEvent } from "@/hooks/admin";
 import { Button } from "@/components/ui/button";
 import {

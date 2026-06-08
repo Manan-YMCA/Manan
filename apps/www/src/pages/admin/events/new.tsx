@@ -1,4 +1,4 @@
-import { NewEventForm } from "@/components/events/NewEventForm";
+import { NewEventForm } from "@/components/admin/events/NewEventForm";
 
 export function NewEvent() {
   return (
@@ -8,3 +8,5 @@ export function NewEvent() {
     </div>
   );
 }
+
+export default NewEvent;

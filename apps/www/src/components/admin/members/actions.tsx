@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { DotsThreeIcon } from "@phosphor-icons/react";
 import { toast } from "sonner";
-import type { Member } from "@/hooks/admin";
+import type { Member } from "@/types/members";
 import { useBanMember, useRemoveMember, useUnbanMember } from "@/hooks/admin";
 import { Button } from "@/components/ui/button";
 import {
@@ -11,7 +11,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { EditEmailDialog } from "./EditEmailDialog";
+import { EditEmailDialog } from "@/components/admin/members/EditEmailDialog";
 
 function wrap(fn: () => Promise<unknown>, successMsg: string) {
   fn()

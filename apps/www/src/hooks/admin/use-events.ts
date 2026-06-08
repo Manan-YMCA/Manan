@@ -1,5 +1,5 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { apiFetch, apiDelete, apiPost, apiPut } from "./api";
+import { apiFetch, apiDelete, apiPost, apiPut } from "@/hooks/admin/api";
 import type { AdminEvent, CreateEventInput, EventsPage } from "@/types/events";
 
 export function useAdminEvents(page = 1) {

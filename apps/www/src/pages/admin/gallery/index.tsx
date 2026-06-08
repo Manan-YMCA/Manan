@@ -3,9 +3,9 @@ import { NavLink } from "react-router";
 import { PlusIcon } from "@phosphor-icons/react";
 import { useAdminGallery } from "@/hooks/admin";
 import { Button } from "@/components/ui/button";
-import { AdminPagination } from "@/components/admin-pagination";
-import { GalleryCard } from "@/components/gallery/GalleryCard";
-import { GalleryCardSkeleton } from "@/components/gallery/GalleryCardSkeleton";
+import { AdminPagination } from "@/components/admin/admin-pagination";
+import { GalleryCard } from "@/components/admin/gallery/GalleryCard";
+import { GalleryCardSkeleton } from "@/components/admin/gallery/GalleryCardSkeleton";
 
 export function AdminGallery() {
   const [page, setPage] = useState(1);
@@ -51,3 +51,5 @@ export function AdminGallery() {
     </div>
   );
 }
+
+export default AdminGallery;

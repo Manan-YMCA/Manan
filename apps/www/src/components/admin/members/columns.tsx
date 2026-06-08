@@ -1,6 +1,6 @@
 import { createColumnHelper } from "@tanstack/react-table";
-import type { Member } from "@/hooks/admin";
-import { ActionsCell } from "./actions";
+import type { Member } from "@/types/members";
+import { ActionsCell } from "@/components/admin/members/actions";
 
 const col = createColumnHelper<Member>();
 
