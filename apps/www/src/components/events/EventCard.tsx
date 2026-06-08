@@ -1,14 +1,6 @@
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-
-export type Event = {
-  name: string;
-  date: string;
-  description: string;
-  banner: string;
-  eventReport?: string;
-  activityReport?: string;
-};
+import type { Event } from "@/types/events";
 
 export function EventCard({ event }: { event: Event }) {
   return (

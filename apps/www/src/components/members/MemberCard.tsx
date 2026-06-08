@@ -1,17 +1,7 @@
 import { Card } from "@/components/ui/card";
+import type { MemberCardData } from "@/types/members";
 
-export type Member = {
-  name: string;
-  role: string;
-  pfp: string;
-  banner: string;
-  languages: string;
-  frameworks: string;
-  otherSkills: string;
-  socialLinks: { title: string; link: string }[];
-};
-
-export function MemberCard({ member }: { member: Member }) {
+export function MemberCard({ member }: { member: MemberCardData }) {
   return (
     <Card className="overflow-hidden bg-white/60 dark:bg-white/5 border-black/10 dark:border-white/10 backdrop-blur-sm">
       <div className="aspect-[3/1] w-full overflow-hidden bg-slate-300 dark:bg-slate-700">
