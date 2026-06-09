@@ -5,19 +5,24 @@ import { admin, emailOTP } from "better-auth/plugins";
 import { Resend } from "resend";
 import { eq } from "drizzle-orm";
 import { db } from "../db/index.js";
-import * as schema from "../db/schema/index.js";
+import * as schema from "../db/schema/auth-schema.js";
 import { env } from "../config/env.js";
 
 const resend = new Resend(env.RESEND_API_KEY)
 const resendFromEmail = env.RESEND_FROM_EMAIL;
 
 export const auth = betterAuth({
-  appName: "Manan",
+  appName: "manan",
   trustedOrigins: [env.FRONTEND_URL, env.TRUSTED_ORIGINS],
   database: drizzleAdapter(db, {
     provider: "pg",
     schema,
   }),
+  advanced: {
+    database: {
+      generateId: (opt) => `${opt.model}-${crypto.randomUUID()}`
+    }
+  },
   plugins: [
     admin({
       defaultRole: "user",
