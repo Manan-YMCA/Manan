@@ -1,5 +1,4 @@
 {
   "buildCommand": "turbo build",
-  "outputDirectory": "dist",
-  "rootDirectory": "apps/api"
+  "outputDirectory": "dist"
 }
