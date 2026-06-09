@@ -5,9 +5,24 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
 
 const statCards = [
-  { key: "members" as const, label: "Members", icon: UsersIcon, to: "/admin/members" },
-  { key: "events" as const, label: "Events", icon: CalendarIcon, to: "/admin/events" },
-  { key: "gallery" as const, label: "Gallery", icon: ImagesIcon, to: "/admin/gallery" },
+  {
+    key: "members" as const,
+    label: "Members",
+    icon: UsersIcon,
+    to: "/admin/members",
+  },
+  {
+    key: "events" as const,
+    label: "Events",
+    icon: CalendarIcon,
+    to: "/admin/events",
+  },
+  {
+    key: "gallery" as const,
+    label: "Gallery",
+    icon: ImagesIcon,
+    to: "/admin/gallery",
+  },
 ];
 
 export function AdminDashboard() {
@@ -18,7 +33,7 @@ export function AdminDashboard() {
       <h1 className="text-2xl font-bold">Overview</h1>
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
         {statCards.map(({ key, label, icon: Icon, to }) => (
-          <NavLink key={key} to={to}>
+          <NavLink key={key} to={to} prefetch="intent">
             <Card className="hover:bg-accent transition-colors cursor-pointer">
               <CardHeader className="flex flex-row items-center justify-between pb-2">
                 <CardTitle className="text-sm font-medium text-muted-foreground">

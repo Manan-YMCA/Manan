@@ -9,8 +9,15 @@ export const columns = [
     id: "avatar",
     cell: ({ row }) => {
       const { image, name } = row.original;
-      const src = image || `https://avatar.vercel.sh/${encodeURIComponent(name)}`;
-      return <img src={src} alt={name} className="size-7 rounded-full object-cover" />;
+      const src =
+        image || `https://avatar.vercel.sh/${encodeURIComponent(name)}`;
+      return (
+        <img
+          src={src}
+          alt={name}
+          className="size-7 rounded-full object-cover"
+        />
+      );
     },
   }),
   col.accessor("name", { header: "Name" }),

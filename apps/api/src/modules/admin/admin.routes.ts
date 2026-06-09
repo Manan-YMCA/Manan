@@ -1,8 +1,25 @@
 import { Router } from "express";
-import { requireAdmin } from "../../middleware/require-admin.js";
-import { requireSession } from "../../middleware/require-session.js";
+import { isAdmin, isAuthenticated } from "../../middlewares/auth.middleware.js";
 import { adminController } from "./admin.controller.js";
 
 export const adminRoutes = Router();
 
-adminRoutes.get("/summary", requireSession, requireAdmin, adminController.getDashboardSummary);
+adminRoutes.get(
+  "/summary",
+  isAuthenticated,
+  isAdmin,
+  adminController.getDashboardSummary,
+);
+adminRoutes.get("/members/public", adminController.listPublicMembers);
+adminRoutes.get(
+  "/members",
+  isAuthenticated,
+  isAdmin,
+  adminController.listMembers,
+);
+adminRoutes.patch(
+  "/members/:id/email",
+  isAuthenticated,
+  isAdmin,
+  adminController.updateMemberEmail,
+);

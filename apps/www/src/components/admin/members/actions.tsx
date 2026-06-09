@@ -32,7 +32,12 @@ export function ActionsCell({ member }: { member: Member }) {
     <>
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
-          <Button variant="ghost" size="icon" disabled={isPending} className="size-7">
+          <Button
+            variant="ghost"
+            size="icon"
+            disabled={isPending}
+            className="size-7"
+          >
             <DotsThreeIcon size={16} />
           </Button>
         </DropdownMenuTrigger>
@@ -43,13 +48,17 @@ export function ActionsCell({ member }: { member: Member }) {
           <DropdownMenuSeparator />
           {member.banned ? (
             <DropdownMenuItem
-              onClick={() => wrap(() => unban.mutateAsync(member.id), "Member unbanned")}
+              onClick={() =>
+                wrap(() => unban.mutateAsync(member.id), "Member unbanned")
+              }
             >
               Unban
             </DropdownMenuItem>
           ) : (
             <DropdownMenuItem
-              onClick={() => wrap(() => ban.mutateAsync(member.id), "Member banned")}
+              onClick={() =>
+                wrap(() => ban.mutateAsync(member.id), "Member banned")
+              }
             >
               Ban
             </DropdownMenuItem>
@@ -57,14 +66,20 @@ export function ActionsCell({ member }: { member: Member }) {
           <DropdownMenuSeparator />
           <DropdownMenuItem
             variant="destructive"
-            onClick={() => wrap(() => remove.mutateAsync(member.id), "Member removed")}
+            onClick={() =>
+              wrap(() => remove.mutateAsync(member.id), "Member removed")
+            }
           >
             Remove
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
 
-      <EditEmailDialog member={member} open={dialogOpen} onOpenChange={setDialogOpen} />
+      <EditEmailDialog
+        member={member}
+        open={dialogOpen}
+        onOpenChange={setDialogOpen}
+      />
     </>
   );
 }

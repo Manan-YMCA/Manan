@@ -23,10 +23,10 @@ export function EventCard({ event }: { event: AdminEvent }) {
 
   return (
     <Card className="overflow-hidden">
-      <NavLink to={`/admin/events/${event.id}`}>
+      <NavLink to={`/admin/events/${event.id}`} prefetch="intent">
         <div className="aspect-video w-full overflow-hidden">
           <img
-            src={event.eventImage}
+            src={event.imageUrl}
             alt={event.name}
             className="size-full object-cover hover:scale-105 transition-transform duration-300"
           />
@@ -63,10 +63,12 @@ export function EventCard({ event }: { event: AdminEvent }) {
         </DropdownMenu>
       </CardHeader>
       <CardContent className="pb-2">
-        <p className="text-xs text-muted-foreground line-clamp-2">{event.desc}</p>
+        <p className="text-xs text-muted-foreground line-clamp-2">
+          {event.description}
+        </p>
       </CardContent>
       <CardFooter className="text-xs text-muted-foreground">
-        {event.eventDate}
+        {event.date}
       </CardFooter>
     </Card>
   );

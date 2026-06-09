@@ -5,9 +5,13 @@ import { EventSkeleton } from "@/components/events/EventSkeleton";
 export function Events() {
   const { data: events = [], isLoading } = useEvents();
 
-  const years = [...new Set(
-    events.map((e) => new Date(e.timestamp).getFullYear().toString())
-  )].sort().reverse();
+  const years = [
+    ...new Set(
+      events.map((e) => new Date(e.timestamp).getFullYear().toString()),
+    ),
+  ]
+    .sort()
+    .reverse();
 
   return (
     <div className="px-4 sm:px-8 md:px-12 lg:px-20 py-12 pb-32">
@@ -16,7 +20,9 @@ export function Events() {
 
       {isLoading ? (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {Array.from({ length: 4 }).map((_, i) => <EventSkeleton key={i} />)}
+          {Array.from({ length: 4 }).map((_, i) => (
+            <EventSkeleton key={i} />
+          ))}
         </div>
       ) : events.length === 0 ? (
         <p className="text-muted-foreground">No events yet.</p>
@@ -28,17 +34,20 @@ export function Events() {
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
               {events
-                .filter((e) => new Date(e.timestamp).getFullYear().toString() === year)
+                .filter(
+                  (e) =>
+                    new Date(e.timestamp).getFullYear().toString() === year,
+                )
                 .map((event) => (
                   <EventCard
                     key={event.id}
                     event={{
                       name: event.name,
-                      date: event.eventDate,
-                      description: event.desc,
-                      banner: event.eventImage,
-                      activityReport: event.eventlinks.activityReport,
-                      eventReport: event.eventlinks.eventReport,
+                      date: event.date,
+                      description: event.description,
+                      banner: event.imageUrl,
+                      activityReport: event.activityReportUrl,
+                      eventReport: event.eventReportUrl,
                     }}
                   />
                 ))}

@@ -3,43 +3,30 @@ export type Event = {
   date: string;
   description: string;
   banner: string;
-  eventReport?: string;
-  activityReport?: string;
+  eventReport?: string | null;
+  activityReport?: string | null;
 };
 
 export type ApiEvent = {
   id: string;
   name: string;
-  desc: string;
-  eventDate: string;
-  eventImage: string;
-  eventlinks: { activityReport: string; eventReport: string };
+  description: string;
+  date: string;
+  imageUrl: string;
+  activityReportUrl: string | null;
+  eventReportUrl: string | null;
   timestamp: string;
-};
-
-export type EventLinks = {
-  activityReport: string;
-  eventReport: string;
 };
 
 export type AdminEvent = {
   id: string;
   name: string;
-  desc: string;
-  eventDate: string;
-  eventImage: string;
-  eventlinks: EventLinks;
+  description: string;
+  date: string;
+  imageUrl: string;
+  activityReportUrl: string | null;
+  eventReportUrl: string | null;
   timestamp: string;
 };
 
 export type EventsPage = { data: AdminEvent[]; total: number };
-
-export type CreateEventInput = {
-  name: string;
-  date: string;
-  desc: string;
-  activityReportLink: string;
-  eventReportLink: string;
-  eventImage: string;
-  eventImagePublicId: string;
-};

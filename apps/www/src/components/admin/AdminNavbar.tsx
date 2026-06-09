@@ -9,7 +9,8 @@ export function AdminNavbar() {
   const navigate = useNavigate();
 
   const handleLogout = () => {
-    authClient.signOut()
+    authClient
+      .signOut()
       .then(() => navigate("/login"))
       .catch(() => toast.error("Failed to sign out"));
   };

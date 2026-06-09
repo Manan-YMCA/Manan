@@ -8,8 +8,12 @@ export const events = pgTable("events", {
   description: text("description").notNull(),
   date: text("date"),
   imageUrl: text("image_url").notNull(),
-  activiryReportUrl: text("activity_report_url"),
+  activityReportUrl: text("activity_report_url"),
   eventReportUrl: text("event_report_url"),
-  timestamp: timestamp("timestamp", { withTimezone: true }).notNull().defaultNow(),
-  updatedAt: timestamp("updated_at", { withTimezone: true }).notNull().defaultNow(),
+  timestamp: timestamp("timestamp", { withTimezone: true })
+    .notNull()
+    .defaultNow(),
+  updatedAt: timestamp("updated_at", { withTimezone: true })
+    .notNull()
+    .defaultNow(),
 });

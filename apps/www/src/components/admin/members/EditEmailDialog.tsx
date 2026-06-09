@@ -19,7 +19,11 @@ interface EditEmailDialogProps {
   onOpenChange: (open: boolean) => void;
 }
 
-export function EditEmailDialog({ member, open, onOpenChange }: EditEmailDialogProps) {
+export function EditEmailDialog({
+  member,
+  open,
+  onOpenChange,
+}: EditEmailDialogProps) {
   const updateEmail = useUpdateMemberEmail();
   const [email, setEmail] = useState(member.email);
 
@@ -27,9 +31,12 @@ export function EditEmailDialog({ member, open, onOpenChange }: EditEmailDialogP
     updateEmail.mutate(
       { id: member.id, email },
       {
-        onSuccess: () => { toast.success("Email updated"); onOpenChange(false); },
+        onSuccess: () => {
+          toast.success("Email updated");
+          onOpenChange(false);
+        },
         onError: (e) => toast.error(e.message),
-      }
+      },
     );
   };
 

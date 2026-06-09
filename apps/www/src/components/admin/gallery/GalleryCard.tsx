@@ -50,8 +50,8 @@ export function GalleryCard({ item }: { item: GalleryItem }) {
         </div>
         <div>
           <p className="text-xs font-medium text-white truncate">{item.name}</p>
-          {item.desc && (
-            <p className="text-xs text-white/70 truncate">{item.desc}</p>
+          {item.description && (
+            <p className="text-xs text-white/70 truncate">{item.description}</p>
           )}
         </div>
       </div>

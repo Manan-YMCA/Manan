@@ -1,27 +1,25 @@
 import { useNavigate } from "react-router";
 import { useForm } from "@tanstack/react-form";
-import { z } from "zod";
 import { toast } from "sonner";
 import { useCreateGalleryItem } from "@/hooks/admin";
+import { galleryPayloadSchema } from "@manan/validations";
 import { ImageUploadField } from "@/components/ImageUploadField";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Field, FieldError, FieldGroup, FieldLabel } from "@/components/ui/field";
-
-const schema = z.object({
-  name: z.string().trim().min(2, "Name must be at least 2 characters"),
-  desc: z.string().trim().min(1, "Description is required"),
-  image: z.url("Upload an image first"),
-  imagePublicId: z.string(),
-});
+import {
+  Field,
+  FieldError,
+  FieldGroup,
+  FieldLabel,
+} from "@/components/ui/field";
 
 export function NewGalleryItemForm() {
   const navigate = useNavigate();
   const create = useCreateGalleryItem();
 
   const form = useForm({
-    defaultValues: { name: "", desc: "", image: "", imagePublicId: "" },
-    validators: { onChange: schema },
+    defaultValues: { name: "", description: "", imageUrl: "" },
+    validators: { onChange: galleryPayloadSchema },
     onSubmit: ({ value }) => {
       create.mutate(value, {
         onSuccess: () => {
@@ -35,13 +33,17 @@ export function NewGalleryItemForm() {
 
   return (
     <form
-      onSubmit={(e) => { e.preventDefault(); form.handleSubmit(); }}
+      onSubmit={(e) => {
+        e.preventDefault();
+        form.handleSubmit();
+      }}
       className="space-y-4"
     >
       <FieldGroup>
         <form.Field name="name">
           {(field) => {
-            const isInvalid = field.state.meta.isTouched && !field.state.meta.isValid;
+            const isInvalid =
+              field.state.meta.isTouched && !field.state.meta.isValid;
             return (
               <Field data-invalid={isInvalid}>
                 <FieldLabel htmlFor={field.name}>Name</FieldLabel>
@@ -59,9 +61,10 @@ export function NewGalleryItemForm() {
           }}
         </form.Field>
 
-        <form.Field name="desc">
+        <form.Field name="description">
           {(field) => {
-            const isInvalid = field.state.meta.isTouched && !field.state.meta.isValid;
+            const isInvalid =
+              field.state.meta.isTouched && !field.state.meta.isValid;
             return (
               <Field data-invalid={isInvalid}>
                 <FieldLabel htmlFor={field.name}>Description</FieldLabel>
@@ -79,9 +82,10 @@ export function NewGalleryItemForm() {
           }}
         </form.Field>
 
-        <form.Field name="image">
+        <form.Field name="imageUrl">
           {(field) => {
-            const isInvalid = field.state.meta.isTouched && !field.state.meta.isValid;
+            const isInvalid =
+              field.state.meta.isTouched && !field.state.meta.isValid;
             return (
               <Field data-invalid={isInvalid}>
                 <FieldLabel>Image</FieldLabel>
@@ -89,7 +93,7 @@ export function NewGalleryItemForm() {
                   value={field.state.value}
                   onChange={(url, publicId) => {
                     field.handleChange(url);
-                    form.setFieldValue("imagePublicId", publicId);
+                    void publicId;
                   }}
                 />
                 {isInvalid && <FieldError errors={field.state.meta.errors} />}
@@ -100,12 +104,19 @@ export function NewGalleryItemForm() {
       </FieldGroup>
 
       <div className="flex gap-3">
-        <Button type="button" variant="outline" onClick={() => navigate("/admin/gallery")}>
+        <Button
+          type="button"
+          variant="outline"
+          onClick={() => navigate("/admin/gallery")}
+        >
           Cancel
         </Button>
         <form.Subscribe selector={(s) => [s.canSubmit, s.isSubmitting]}>
           {([canSubmit, isSubmitting]) => (
-            <Button type="submit" disabled={!canSubmit || isSubmitting || create.isPending}>
+            <Button
+              type="submit"
+              disabled={!canSubmit || isSubmitting || create.isPending}
+            >
               {create.isPending ? "Creating…" : "Add to gallery"}
             </Button>
           )}

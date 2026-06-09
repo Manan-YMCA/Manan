@@ -8,20 +8,20 @@ import { db } from "../db/index.js";
 import * as schema from "../db/schema/auth-schema.js";
 import { env } from "../config/env.js";
 
-const resend = new Resend(env.RESEND_API_KEY)
+const resend = new Resend(env.RESEND_API_KEY);
 const resendFromEmail = env.RESEND_FROM_EMAIL;
 
 export const auth = betterAuth({
   appName: "manan",
-  trustedOrigins: [env.FRONTEND_URL, env.TRUSTED_ORIGINS],
+  trustedOrigins: env.TRUSTED_ORIGINS,
   database: drizzleAdapter(db, {
     provider: "pg",
     schema,
   }),
   advanced: {
     database: {
-      generateId: (opt) => `${opt.model}-${crypto.randomUUID()}`
-    }
+      generateId: (opt) => `${opt.model}-${crypto.randomUUID()}`,
+    },
   },
   plugins: [
     admin({
@@ -39,7 +39,7 @@ export const auth = betterAuth({
 
         if (resendFromEmail.includes("yourdomain.com")) {
           throw new Error(
-            "RESEND_FROM_EMAIL is still using the placeholder domain. Replace it with an email from a verified Resend domain."
+            "RESEND_FROM_EMAIL is still using the placeholder domain. Replace it with an email from a verified Resend domain.",
           );
         }
 
@@ -65,15 +65,18 @@ export const auth = betterAuth({
 
         if (response.error) {
           if (
-            response.error.message?.toLowerCase().includes("not authorized to send emails from")
+            response.error.message
+              ?.toLowerCase()
+              .includes("not authorized to send emails from")
           ) {
             throw new Error(
-              "This Resend API key cannot send from the current RESEND_FROM_EMAIL. Use a sender address from a domain verified inside the same Resend account."
+              "This Resend API key cannot send from the current RESEND_FROM_EMAIL. Use a sender address from a domain verified inside the same Resend account.",
             );
           }
 
           throw new Error(
-            response.error.message || "Failed to send OTP email through Resend."
+            response.error.message ||
+            "Failed to send OTP email through Resend.",
           );
         }
       },
@@ -90,9 +93,9 @@ export const auth = betterAuth({
 
       if (!ctx.body.email) return;
       const [existing] = await db
-        .select({ id: schema.users.id })
-        .from(schema.users)
-        .where(eq(schema.users.email, ctx.body.email))
+        .select({ id: schema.user.id })
+        .from(schema.user)
+        .where(eq(schema.user.email, ctx.body.email))
         .limit(1);
 
       if (!existing) {

@@ -28,25 +28,27 @@ export function AdminGallery() {
       <div className="flex items-center justify-between">
         <h1 className="text-2xl font-bold">Gallery</h1>
         <Button asChild size="sm">
-          <NavLink to="/admin/gallery/new">
+          <NavLink to="/admin/gallery/new" prefetch="intent">
             <PlusIcon size={14} />
             Add image
           </NavLink>
         </Button>
       </div>
       <div className="space-y-4">
-      {items.length === 0 ? (
-        <p className="text-sm text-muted-foreground">No gallery items found.</p>
-      ) : (
-        <>
-          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3">
-            {items.map((item) => (
-              <GalleryCard key={item.id} item={item} />
-            ))}
-          </div>
-          <AdminPagination page={page} total={total} onPageChange={setPage} />
-        </>
-      )}
+        {items.length === 0 ? (
+          <p className="text-sm text-muted-foreground">
+            No gallery items found.
+          </p>
+        ) : (
+          <>
+            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3">
+              {items.map((item) => (
+                <GalleryCard key={item.id} item={item} />
+              ))}
+            </div>
+            <AdminPagination page={page} total={total} onPageChange={setPage} />
+          </>
+        )}
       </div>
     </div>
   );

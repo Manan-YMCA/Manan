@@ -5,7 +5,12 @@ import { ListIcon } from "@phosphor-icons/react";
 import { authClient } from "@/lib/auth-client";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
-import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@/components/ui/sheet";
+import {
+  Sheet,
+  SheetContent,
+  SheetHeader,
+  SheetTitle,
+} from "@/components/ui/sheet";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import { UserMenu } from "@/components/UserMenu";
 
@@ -21,7 +26,11 @@ export function Navbar() {
 
   return (
     <nav className="fixed top-0 inset-x-0 z-50 flex items-center justify-between px-6 py-4 bg-white/40 dark:bg-black/50 backdrop-blur-lg border-b border-black/10 dark:border-white/10">
-      <NavLink to="/" className="flex items-center gap-2 text-black dark:text-white font-bold text-xl tracking-tight">
+      <NavLink
+        to="/"
+        prefetch="intent"
+        className="flex items-center gap-2 text-black dark:text-white font-bold text-xl tracking-tight"
+      >
         <img src={mananLogo} alt="Manan logo" className="size-7" />
         Manan
       </NavLink>
@@ -32,6 +41,7 @@ export function Navbar() {
             <NavLink
               to={to}
               end
+              prefetch="intent"
               className={({ isActive }) =>
                 `text-sm transition-colors ${isActive ? "text-black dark:text-white font-medium" : "text-black/60 dark:text-white/60 hover:text-black dark:hover:text-white"}`
               }
@@ -57,7 +67,10 @@ export function Navbar() {
       </div>
 
       <Sheet open={open} onOpenChange={setOpen}>
-        <SheetContent side="right" className="w-64 bg-white/70 dark:bg-black/70 backdrop-blur-md border-black/10 dark:border-white/10 text-black dark:text-white">
+        <SheetContent
+          side="right"
+          className="w-64 bg-white/70 dark:bg-black/70 backdrop-blur-md border-black/10 dark:border-white/10 text-black dark:text-white"
+        >
           <SheetHeader className="border-b border-black/10 dark:border-white/10 pb-4">
             <SheetTitle className="flex items-center gap-2 text-black dark:text-white font-bold text-lg">
               <img src={mananLogo} alt="Manan logo" className="size-6" />
@@ -70,6 +83,7 @@ export function Navbar() {
                 <NavLink
                   to={to}
                   end
+                  prefetch="intent"
                   onClick={() => setOpen(false)}
                   className={({ isActive }) =>
                     `block rounded-lg px-3 py-2 text-sm transition-colors ${isActive ? "bg-black/5 dark:bg-white/10 text-black dark:text-white font-medium" : "text-black/60 dark:text-white/60 hover:bg-black/5 dark:hover:bg-white/5 hover:text-black dark:hover:text-white"}`
@@ -85,21 +99,37 @@ export function Navbar() {
               <div className="space-y-2">
                 <div className="flex items-center gap-2 px-1">
                   <Avatar className="size-7">
-                    <AvatarImage src={session.user.image || `https://avatar.vercel.sh/${encodeURIComponent(session.user.name)}`} />
-                    <AvatarFallback>{session.user.name.slice(0, 2).toUpperCase()}</AvatarFallback>
+                    <AvatarImage
+                      src={
+                        session.user.image ||
+                        `https://avatar.vercel.sh/${encodeURIComponent(session.user.name)}`
+                      }
+                    />
+                    <AvatarFallback>
+                      {session.user.name.slice(0, 2).toUpperCase()}
+                    </AvatarFallback>
                   </Avatar>
-                  <span className="text-sm font-medium truncate">{session.user.name}</span>
+                  <span className="text-sm font-medium truncate">
+                    {session.user.name}
+                  </span>
                 </div>
                 <Button variant="outline" size="sm" asChild className="w-full">
-                  {session.user.role === "admin"
-                    ? <NavLink to="/admin" onClick={() => setOpen(false)}>Admin page</NavLink>
-                    : <NavLink to="/profile/edit" onClick={() => setOpen(false)}>Edit profile</NavLink>
-                  }
+                  {session.user.role === "admin" ? (
+                    <NavLink to="/admin" prefetch="intent" onClick={() => setOpen(false)}>
+                      Admin page
+                    </NavLink>
+                  ) : (
+                    <NavLink to="/profile/edit" prefetch="intent" onClick={() => setOpen(false)}>
+                      Edit profile
+                    </NavLink>
+                  )}
                 </Button>
               </div>
             ) : (
               <Button variant="outline" size="sm" asChild className="w-full">
-                <NavLink to="/login" onClick={() => setOpen(false)}>Login</NavLink>
+                <NavLink to="/login" prefetch="intent" onClick={() => setOpen(false)}>
+                  Login
+                </NavLink>
               </Button>
             )}
           </div>

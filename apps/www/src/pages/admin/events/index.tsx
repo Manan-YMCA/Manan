@@ -28,25 +28,25 @@ export function AdminEvents() {
       <div className="flex items-center justify-between">
         <h1 className="text-2xl font-bold">Events</h1>
         <Button asChild size="sm">
-          <NavLink to="/admin/events/new">
+          <NavLink to="/admin/events/new" prefetch="intent">
             <PlusIcon size={14} />
             New event
           </NavLink>
         </Button>
       </div>
       <div className="space-y-4">
-      {events.length === 0 ? (
-        <p className="text-sm text-muted-foreground">No events found.</p>
-      ) : (
-        <>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-            {events.map((event) => (
-              <EventCard key={event.id} event={event} />
-            ))}
-          </div>
-          <AdminPagination page={page} total={total} onPageChange={setPage} />
-        </>
-      )}
+        {events.length === 0 ? (
+          <p className="text-sm text-muted-foreground">No events found.</p>
+        ) : (
+          <>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+              {events.map((event) => (
+                <EventCard key={event.id} event={event} />
+              ))}
+            </div>
+            <AdminPagination page={page} total={total} onPageChange={setPage} />
+          </>
+        )}
       </div>
     </div>
   );

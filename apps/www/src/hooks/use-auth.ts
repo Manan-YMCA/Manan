@@ -10,7 +10,6 @@ export function useSendOtp() {
 
 export function useVerifyOtp(email: string) {
   return useMutation({
-    mutationFn: (otp: string) =>
-      authClient.signIn.emailOtp({ email, otp }),
+    mutationFn: (otp: string) => authClient.signIn.emailOtp({ email, otp }),
   });
 }

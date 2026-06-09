@@ -26,16 +26,24 @@ export function AdminPagination({ page, total, onPageChange }: Props) {
       <PaginationContent>
         <PaginationItem>
           <PaginationPrevious
-            onClick={(e) => { e.preventDefault(); if (page > 1) onPageChange(page - 1); }}
+            onClick={(e) => {
+              e.preventDefault();
+              if (page > 1) onPageChange(page - 1);
+            }}
             aria-disabled={page === 1}
-            className={page === 1 ? "pointer-events-none opacity-50" : "cursor-pointer"}
+            className={
+              page === 1 ? "pointer-events-none opacity-50" : "cursor-pointer"
+            }
           />
         </PaginationItem>
         {pages.map((p) => (
           <PaginationItem key={p}>
             <PaginationLink
               isActive={p === page}
-              onClick={(e) => { e.preventDefault(); onPageChange(p); }}
+              onClick={(e) => {
+                e.preventDefault();
+                onPageChange(p);
+              }}
               className="cursor-pointer"
             >
               {p}
@@ -44,9 +52,16 @@ export function AdminPagination({ page, total, onPageChange }: Props) {
         ))}
         <PaginationItem>
           <PaginationNext
-            onClick={(e) => { e.preventDefault(); if (page < totalPages) onPageChange(page + 1); }}
+            onClick={(e) => {
+              e.preventDefault();
+              if (page < totalPages) onPageChange(page + 1);
+            }}
             aria-disabled={page === totalPages}
-            className={page === totalPages ? "pointer-events-none opacity-50" : "cursor-pointer"}
+            className={
+              page === totalPages
+                ? "pointer-events-none opacity-50"
+                : "cursor-pointer"
+            }
           />
         </PaginationItem>
       </PaginationContent>

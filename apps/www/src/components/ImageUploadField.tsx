@@ -21,7 +21,13 @@ export function ImageUploadField({ value, onChange }: Props) {
 
   return (
     <div className="space-y-2">
-      <input ref={inputRef} type="file" accept="image/*" className="hidden" onChange={handleFile} />
+      <input
+        ref={inputRef}
+        type="file"
+        accept="image/*"
+        className="hidden"
+        onChange={handleFile}
+      />
       <Button
         type="button"
         variant="outline"
@@ -32,7 +38,11 @@ export function ImageUploadField({ value, onChange }: Props) {
         {upload.isPending ? "Uploading…" : "Choose image"}
       </Button>
       {value && (
-        <img src={value} alt="Preview" className="h-32 w-full object-cover rounded-md" />
+        <img
+          src={value}
+          alt="Preview"
+          className="h-32 w-full object-cover rounded-md"
+        />
       )}
       {upload.isError && (
         <p className="text-xs text-destructive">{upload.error.message}</p>

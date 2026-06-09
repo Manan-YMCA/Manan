@@ -1,6 +1,7 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { apiFetch, apiDelete, apiPost, apiPut } from "@/hooks/admin/api";
-import type { AdminEvent, CreateEventInput, EventsPage } from "@/types/events";
+import type { EventPayload } from "@manan/validations";
+import type { AdminEvent, EventsPage } from "@/types/events";
 
 export function useAdminEvents(page = 1) {
   return useQuery({
@@ -19,7 +20,7 @@ export function useEvent(id: string) {
 export function useUpdateEvent() {
   const qc = useQueryClient();
   return useMutation({
-    mutationFn: ({ id, ...input }: CreateEventInput & { id: string }) =>
+    mutationFn: ({ id, ...input }: EventPayload & { id: string }) =>
       apiPut<AdminEvent>(`/api/events/${id}`, input),
     onSuccess: (_, { id }) => {
       qc.invalidateQueries({ queryKey: ["admin", "events"] });
@@ -31,7 +32,8 @@ export function useUpdateEvent() {
 export function useCreateEvent() {
   const qc = useQueryClient();
   return useMutation({
-    mutationFn: (input: CreateEventInput) => apiPost<AdminEvent>("/api/events", input),
+    mutationFn: (input: EventPayload) =>
+      apiPost<AdminEvent>("/api/events", input),
     onSuccess: () => {
       qc.invalidateQueries({ queryKey: ["admin", "events"] });
       qc.invalidateQueries({ queryKey: ["admin", "summary"] });

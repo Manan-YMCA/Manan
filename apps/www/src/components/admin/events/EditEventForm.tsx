@@ -1,24 +1,19 @@
 import { useNavigate } from "react-router";
 import { useForm } from "@tanstack/react-form";
-import { z } from "zod";
 import { toast } from "sonner";
 import type { AdminEvent } from "@/types/events";
 import { useUpdateEvent } from "@/hooks/admin";
+import { eventPayloadSchema } from "@manan/validations";
 import { ImageUploadField } from "@/components/ImageUploadField";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { Field, FieldError, FieldGroup, FieldLabel } from "@/components/ui/field";
-
-const schema = z.object({
-  name: z.string().trim().min(2, "Name must be at least 2 characters"),
-  date: z.string().trim().min(1, "Date is required"),
-  desc: z.string().trim().min(1, "Description is required"),
-  activityReportLink: z.url("Invalid url"),
-  eventReportLink: z.url("Invalid url"),
-  eventImage: z.url("Upload a poster first"),
-  eventImagePublicId: z.string(),
-});
+import {
+  Field,
+  FieldError,
+  FieldGroup,
+  FieldLabel,
+} from "@/components/ui/field";
 
 export function EditEventForm({ event }: { event: AdminEvent }) {
   const navigate = useNavigate();
@@ -27,14 +22,13 @@ export function EditEventForm({ event }: { event: AdminEvent }) {
   const form = useForm({
     defaultValues: {
       name: event.name,
-      date: event.eventDate,
-      desc: event.desc,
-      activityReportLink: event.eventlinks.activityReport,
-      eventReportLink: event.eventlinks.eventReport,
-      eventImage: event.eventImage,
-      eventImagePublicId: "",
+      date: event.date,
+      description: event.description,
+      activityReportUrl: event.activityReportUrl ?? "",
+      eventReportUrl: event.eventReportUrl ?? "",
+      imageUrl: event.imageUrl,
     },
-    validators: { onChange: schema },
+    validators: { onChange: eventPayloadSchema },
     onSubmit: ({ value }) => {
       update.mutate(
         { id: event.id, ...value },
@@ -44,20 +38,24 @@ export function EditEventForm({ event }: { event: AdminEvent }) {
             navigate("/admin/events");
           },
           onError: (e) => toast.error(e.message),
-        }
+        },
       );
     },
   });
 
   return (
     <form
-      onSubmit={(e) => { e.preventDefault(); form.handleSubmit(); }}
+      onSubmit={(e) => {
+        e.preventDefault();
+        form.handleSubmit();
+      }}
       className="space-y-4"
     >
       <FieldGroup>
         <form.Field name="name">
           {(field) => {
-            const isInvalid = field.state.meta.isTouched && !field.state.meta.isValid;
+            const isInvalid =
+              field.state.meta.isTouched && !field.state.meta.isValid;
             return (
               <Field data-invalid={isInvalid}>
                 <FieldLabel htmlFor={field.name}>Name</FieldLabel>
@@ -75,7 +73,8 @@ export function EditEventForm({ event }: { event: AdminEvent }) {
 
         <form.Field name="date">
           {(field) => {
-            const isInvalid = field.state.meta.isTouched && !field.state.meta.isValid;
+            const isInvalid =
+              field.state.meta.isTouched && !field.state.meta.isValid;
             return (
               <Field data-invalid={isInvalid}>
                 <FieldLabel htmlFor={field.name}>Date</FieldLabel>
@@ -92,9 +91,10 @@ export function EditEventForm({ event }: { event: AdminEvent }) {
           }}
         </form.Field>
 
-        <form.Field name="desc">
+        <form.Field name="description">
           {(field) => {
-            const isInvalid = field.state.meta.isTouched && !field.state.meta.isValid;
+            const isInvalid =
+              field.state.meta.isTouched && !field.state.meta.isValid;
             return (
               <Field data-invalid={isInvalid}>
                 <FieldLabel htmlFor={field.name}>Description</FieldLabel>
@@ -111,13 +111,15 @@ export function EditEventForm({ event }: { event: AdminEvent }) {
           }}
         </form.Field>
 
-        <form.Field name="activityReportLink">
+        <form.Field name="activityReportUrl">
           {(field) => {
-            const isInvalid = field.state.meta.isTouched && !field.state.meta.isValid;
+            const isInvalid =
+              field.state.meta.isTouched && !field.state.meta.isValid;
             return (
               <Field data-invalid={isInvalid}>
                 <FieldLabel htmlFor={field.name}>
-                  Activity Report Link <span className="text-muted-foreground">(optional)</span>
+                  Activity Report Link{" "}
+                  <span className="text-muted-foreground">(optional)</span>
                 </FieldLabel>
                 <Input
                   id={field.name}
@@ -133,13 +135,15 @@ export function EditEventForm({ event }: { event: AdminEvent }) {
           }}
         </form.Field>
 
-        <form.Field name="eventReportLink">
+        <form.Field name="eventReportUrl">
           {(field) => {
-            const isInvalid = field.state.meta.isTouched && !field.state.meta.isValid;
+            const isInvalid =
+              field.state.meta.isTouched && !field.state.meta.isValid;
             return (
               <Field data-invalid={isInvalid}>
                 <FieldLabel htmlFor={field.name}>
-                  Event Report Link <span className="text-muted-foreground">(optional)</span>
+                  Event Report Link{" "}
+                  <span className="text-muted-foreground">(optional)</span>
                 </FieldLabel>
                 <Input
                   id={field.name}
@@ -155,9 +159,10 @@ export function EditEventForm({ event }: { event: AdminEvent }) {
           }}
         </form.Field>
 
-        <form.Field name="eventImage">
+        <form.Field name="imageUrl">
           {(field) => {
-            const isInvalid = field.state.meta.isTouched && !field.state.meta.isValid;
+            const isInvalid =
+              field.state.meta.isTouched && !field.state.meta.isValid;
             return (
               <Field data-invalid={isInvalid}>
                 <FieldLabel>Poster</FieldLabel>
@@ -165,7 +170,7 @@ export function EditEventForm({ event }: { event: AdminEvent }) {
                   value={field.state.value}
                   onChange={(url, publicId) => {
                     field.handleChange(url);
-                    form.setFieldValue("eventImagePublicId", publicId);
+                    void publicId;
                   }}
                 />
                 {isInvalid && <FieldError errors={field.state.meta.errors} />}
@@ -176,12 +181,19 @@ export function EditEventForm({ event }: { event: AdminEvent }) {
       </FieldGroup>
 
       <div className="flex gap-3">
-        <Button type="button" variant="outline" onClick={() => navigate("/admin/events")}>
+        <Button
+          type="button"
+          variant="outline"
+          onClick={() => navigate("/admin/events")}
+        >
           Cancel
         </Button>
         <form.Subscribe selector={(s) => [s.canSubmit, s.isSubmitting]}>
           {([canSubmit, isSubmitting]) => (
-            <Button type="submit" disabled={!canSubmit || isSubmitting || update.isPending}>
+            <Button
+              type="submit"
+              disabled={!canSubmit || isSubmitting || update.isPending}
+            >
               {update.isPending ? "Saving…" : "Save changes"}
             </Button>
           )}

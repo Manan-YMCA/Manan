@@ -1,11 +1,13 @@
-export const successResponse = (message: string, data: unknown) => ({
-  success: true,
-  message,
-  data,
-});
+export default class ApiResponse<T = unknown> {
+  statusCode: number;
+  success: true;
+  message: string;
+  data: T;
 
-export const errorResponse = (message: string, details?: unknown) => ({
-  success: false,
-  message,
-  details,
-});
+  constructor(statusCode: number, data: T, message = "Success") {
+    this.statusCode = statusCode;
+    this.success = true;
+    this.message = message;
+    this.data = data;
+  }
+}

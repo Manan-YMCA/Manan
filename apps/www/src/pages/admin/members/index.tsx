@@ -1,7 +1,11 @@
 import { useState } from "react";
 import { NavLink } from "react-router";
 import { PlusIcon } from "@phosphor-icons/react";
-import { flexRender, getCoreRowModel, useReactTable } from "@tanstack/react-table";
+import {
+  flexRender,
+  getCoreRowModel,
+  useReactTable,
+} from "@tanstack/react-table";
 import { useMembers } from "@/hooks/admin";
 import { Button } from "@/components/ui/button";
 import {
@@ -32,7 +36,7 @@ export function AdminMembers() {
       <div className="flex items-center justify-between">
         <h1 className="text-2xl font-bold">Members</h1>
         <Button asChild size="sm">
-          <NavLink to="/admin/members/new">
+          <NavLink to="/admin/members/new" prefetch="intent">
             <PlusIcon size={14} />
             New member
           </NavLink>
@@ -46,7 +50,10 @@ export function AdminMembers() {
                 <TableRow key={hg.id}>
                   {hg.headers.map((header) => (
                     <TableHead key={header.id}>
-                      {flexRender(header.column.columnDef.header, header.getContext())}
+                      {flexRender(
+                        header.column.columnDef.header,
+                        header.getContext(),
+                      )}
                     </TableHead>
                   ))}
                 </TableRow>
@@ -55,13 +62,19 @@ export function AdminMembers() {
             <TableBody>
               {isLoading ? (
                 <TableRow>
-                  <TableCell colSpan={columns.length} className="h-24 text-center text-muted-foreground">
+                  <TableCell
+                    colSpan={columns.length}
+                    className="h-24 text-center text-muted-foreground"
+                  >
                     Loading…
                   </TableCell>
                 </TableRow>
               ) : table.getRowModel().rows.length === 0 ? (
                 <TableRow>
-                  <TableCell colSpan={columns.length} className="h-24 text-center text-muted-foreground">
+                  <TableCell
+                    colSpan={columns.length}
+                    className="h-24 text-center text-muted-foreground"
+                  >
                     No members found.
                   </TableCell>
                 </TableRow>
@@ -70,7 +83,10 @@ export function AdminMembers() {
                   <TableRow key={row.id}>
                     {row.getVisibleCells().map((cell) => (
                       <TableCell key={cell.id}>
-                        {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                        {flexRender(
+                          cell.column.columnDef.cell,
+                          cell.getContext(),
+                        )}
                       </TableCell>
                     ))}
                   </TableRow>

@@ -5,7 +5,9 @@ import { MemberSkeleton } from "@/components/members/MemberSkeleton";
 export function Members() {
   const { data: members = [], isLoading } = usePublicMembers();
 
-  const years = [...new Set(members.map((m) => m.admissionYear))].sort().reverse();
+  const years = [...new Set(members.map((m) => m.admissionYear))]
+    .sort()
+    .reverse();
 
   return (
     <div className="px-4 sm:px-8 md:px-12 lg:px-20 py-12 pb-32">
@@ -14,7 +16,9 @@ export function Members() {
 
       {isLoading ? (
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-          {Array.from({ length: 4 }).map((_, i) => <MemberSkeleton key={i} />)}
+          {Array.from({ length: 4 }).map((_, i) => (
+            <MemberSkeleton key={i} />
+          ))}
         </div>
       ) : members.length === 0 ? (
         <p className="text-muted-foreground">No members yet.</p>
@@ -33,7 +37,9 @@ export function Members() {
                     member={{
                       name: member.name,
                       role: member.designation,
-                      pfp: member.image ?? `https://avatar.vercel.sh/${encodeURIComponent(member.name)}`,
+                      pfp:
+                        member.image ??
+                        `https://avatar.vercel.sh/${encodeURIComponent(member.name)}`,
                       banner: member.bannerUrl,
                       languages: member.languages,
                       frameworks: member.techStack,

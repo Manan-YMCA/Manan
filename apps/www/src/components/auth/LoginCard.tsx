@@ -105,15 +105,22 @@ export function LoginCard() {
         {step === "email" ? (
           <form
             id="email-form"
-            onSubmit={(e) => { e.preventDefault(); emailForm.handleSubmit(); }}
+            onSubmit={(e) => {
+              e.preventDefault();
+              emailForm.handleSubmit();
+            }}
           >
             <FieldGroup>
               <emailForm.Field name="email">
                 {(field) => {
-                  const isInvalid = field.state.meta.isTouched && !field.state.meta.isValid;
+                  const isInvalid =
+                    field.state.meta.isTouched && !field.state.meta.isValid;
                   return (
                     <Field data-invalid={isInvalid}>
-                      <FieldLabel htmlFor={field.name} className="text-xs font-semibold uppercase tracking-wide">
+                      <FieldLabel
+                        htmlFor={field.name}
+                        className="text-xs font-semibold uppercase tracking-wide"
+                      >
                         Email
                       </FieldLabel>
                       <Input
@@ -129,7 +136,9 @@ export function LoginCard() {
                         aria-invalid={isInvalid}
                         className="h-9"
                       />
-                      {isInvalid && <FieldError errors={field.state.meta.errors} />}
+                      {isInvalid && (
+                        <FieldError errors={field.state.meta.errors} />
+                      )}
                     </Field>
                   );
                 }}
@@ -139,19 +148,28 @@ export function LoginCard() {
         ) : (
           <form
             id="otp-form"
-            onSubmit={(e) => { e.preventDefault(); otpForm.handleSubmit(); }}
+            onSubmit={(e) => {
+              e.preventDefault();
+              otpForm.handleSubmit();
+            }}
           >
             <FieldGroup>
               <div>
-                <p className="mb-1 text-xs font-semibold uppercase tracking-wide text-muted-foreground">Email</p>
+                <p className="mb-1 text-xs font-semibold uppercase tracking-wide text-muted-foreground">
+                  Email
+                </p>
                 <p className="text-xs">{sentEmail}</p>
               </div>
               <otpForm.Field name="otp">
                 {(field) => {
-                  const isInvalid = field.state.meta.isTouched && !field.state.meta.isValid;
+                  const isInvalid =
+                    field.state.meta.isTouched && !field.state.meta.isValid;
                   return (
                     <Field data-invalid={isInvalid}>
-                      <FieldLabel htmlFor={field.name} className="text-xs font-semibold uppercase tracking-wide">
+                      <FieldLabel
+                        htmlFor={field.name}
+                        className="text-xs font-semibold uppercase tracking-wide"
+                      >
                         OTP
                       </FieldLabel>
                       <Input
@@ -168,7 +186,9 @@ export function LoginCard() {
                         aria-invalid={isInvalid}
                         className="h-9"
                       />
-                      {isInvalid && <FieldError errors={field.state.meta.errors} />}
+                      {isInvalid && (
+                        <FieldError errors={field.state.meta.errors} />
+                      )}
                     </Field>
                   );
                 }}
@@ -181,12 +201,22 @@ export function LoginCard() {
       <CardFooter className="justify-between">
         {step === "email" ? (
           <>
-            <Button type="button" variant="outline" onClick={() => navigate(-1)}>
+            <Button
+              type="button"
+              variant="outline"
+              onClick={() => navigate(-1)}
+            >
               Back
             </Button>
-            <emailForm.Subscribe selector={(s) => [s.canSubmit, s.isSubmitting]}>
+            <emailForm.Subscribe
+              selector={(s) => [s.canSubmit, s.isSubmitting]}
+            >
               {([canSubmit, isSubmitting]) => (
-                <Button form="email-form" type="submit" disabled={!canSubmit || isSubmitting || sendOtp.isPending}>
+                <Button
+                  form="email-form"
+                  type="submit"
+                  disabled={!canSubmit || isSubmitting || sendOtp.isPending}
+                >
                   {sendOtp.isPending ? "Sending…" : "Send OTP"}
                 </Button>
               )}
@@ -197,13 +227,20 @@ export function LoginCard() {
             <Button
               type="button"
               variant="outline"
-              onClick={() => { setStep("email"); otpForm.reset(); }}
+              onClick={() => {
+                setStep("email");
+                otpForm.reset();
+              }}
             >
               Change Email
             </Button>
             <otpForm.Subscribe selector={(s) => [s.canSubmit, s.isSubmitting]}>
               {([canSubmit, isSubmitting]) => (
-                <Button form="otp-form" type="submit" disabled={!canSubmit || isSubmitting || verifyOtp.isPending}>
+                <Button
+                  form="otp-form"
+                  type="submit"
+                  disabled={!canSubmit || isSubmitting || verifyOtp.isPending}
+                >
                   {verifyOtp.isPending ? "Verifying…" : "Verify OTP"}
                 </Button>
               )}

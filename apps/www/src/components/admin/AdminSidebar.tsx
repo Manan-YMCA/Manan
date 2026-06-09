@@ -28,14 +28,14 @@ export function AdminSidebar() {
   return (
     <Sidebar>
       <SidebarHeader className="px-4 py-3">
-        <NavLink to="/" className="flex items-center gap-2 font-semibold">
+        <NavLink to="/" prefetch="intent" className="flex items-center gap-2 font-semibold">
           <img src={mananLogo} alt="Manan logo" className="size-6" />
           <span>Manan</span>
         </NavLink>
       </SidebarHeader>
       <SidebarContent>
         <SidebarGroup>
-<SidebarGroupContent>
+          <SidebarGroupContent>
             <SidebarMenu>
               {navItems.map(({ to, label, icon: Icon, end }) => (
                 <SidebarMenuItem key={to}>
@@ -43,8 +43,11 @@ export function AdminSidebar() {
                     <NavLink
                       to={to}
                       end={end}
+                      prefetch="intent"
                       className={({ isActive }) =>
-                        isActive ? "bg-accent text-accent-foreground font-medium" : ""
+                        isActive
+                          ? "bg-accent text-accent-foreground font-medium"
+                          : ""
                       }
                     >
                       <Icon size={16} />

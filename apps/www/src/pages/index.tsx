@@ -22,16 +22,20 @@ export function Home() {
         <div className="rounded-2xl border border-black/10 bg-white/60 dark:border-white/10 dark:bg-white/5 p-8 backdrop-blur-sm text-gray-700 dark:text-gray-200 text-lg md:text-xl font-medium leading-relaxed">
           <p>
             <strong className="text-black dark:text-white">
-              We are the Technical Society of YMCA University of Science and Technology
+              We are the Technical Society of YMCA University of Science and
+              Technology
             </strong>
-            , believes in rising by the means of learning ever so more. The word Manan comes from Sanskrit
-            and it means deep thought, contemplation, or profound reflection. We are proud of our culture
-            wherein we share our knowledge between people to gather more perspective towards things.
+            , believes in rising by the means of learning ever so more. The word
+            Manan comes from Sanskrit and it means deep thought, contemplation,
+            or profound reflection. We are proud of our culture wherein we share
+            our knowledge between people to gather more perspective towards
+            things.
             <br />
             <br />
             <strong className="text-black dark:text-white">
-              That's why we organise, and also take part in tech-talks, workshops, hackathons, coding
-              contests, gaming events, and much more.
+              That's why we organise, and also take part in tech-talks,
+              workshops, hackathons, coding contests, gaming events, and much
+              more.
             </strong>
           </p>
         </div>

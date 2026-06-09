@@ -1,15 +1,36 @@
-import { EnvelopeSimpleIcon, InstagramLogoIcon, LinkedinLogoIcon, YoutubeLogoIcon } from "@phosphor-icons/react";
+import {
+  EnvelopeSimpleIcon,
+  InstagramLogoIcon,
+  LinkedinLogoIcon,
+  YoutubeLogoIcon,
+} from "@phosphor-icons/react";
 
 const socials = [
-  { href: "mailto:manantechnosurge@gmail.com", label: "Email", icon: <EnvelopeSimpleIcon size={20} /> },
-  { href: "https://www.instagram.com/manantechnosurge/", label: "Instagram", icon: <InstagramLogoIcon size={20} /> },
-  { href: "https://www.linkedin.com/company/manan-ymca", label: "LinkedIn", icon: <LinkedinLogoIcon size={20} /> },
-  { href: "https://www.youtube.com/channel/UC_wkbc5yiQyol-ONyVdcE4w", label: "YouTube", icon: <YoutubeLogoIcon size={20} /> },
+  {
+    href: "mailto:manantechnosurge@gmail.com",
+    label: "Email",
+    icon: <EnvelopeSimpleIcon size={20} />,
+  },
+  {
+    href: "https://www.instagram.com/manantechnosurge/",
+    label: "Instagram",
+    icon: <InstagramLogoIcon size={20} />,
+  },
+  {
+    href: "https://www.linkedin.com/company/manan-ymca",
+    label: "LinkedIn",
+    icon: <LinkedinLogoIcon size={20} />,
+  },
+  {
+    href: "https://www.youtube.com/channel/UC_wkbc5yiQyol-ONyVdcE4w",
+    label: "YouTube",
+    icon: <YoutubeLogoIcon size={20} />,
+  },
 ];
 
 export function Footer() {
   return (
-    <footer className="border-t border-black/10 dark:border-white/10 bg-black/5 dark:bg-white/5 backdrop-blur-sm px-6 py-4 flex items-center justify-between">
+    <footer className="border-t border-black/10 dark:border-white/10 bg-white/40 dark:bg-black/50 backdrop-blur-lg px-6 py-4 flex items-center justify-between">
       <p className="text-sm text-black/50 dark:text-white/50">
         © {new Date().getFullYear()} Manan — A Techno Surge
       </p>

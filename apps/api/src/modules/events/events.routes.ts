@@ -1,9 +1,21 @@
 import { Router } from "express";
-import { requireAdmin } from "../../middleware/require-admin.js";
-import { requireSession } from "../../middleware/require-session.js";
+import { isAdmin, isAuthenticated } from "../../middlewares/auth.middleware.js";
 import { eventsController } from "./events.controller.js";
 
 export const eventsRoutes = Router();
 
 eventsRoutes.get("/", eventsController.listEvents);
-eventsRoutes.post("/", requireSession, requireAdmin, eventsController.createEvent);
+eventsRoutes.get("/:id", eventsController.getEvent);
+eventsRoutes.post("/", isAuthenticated, isAdmin, eventsController.createEvent);
+eventsRoutes.put(
+  "/:id",
+  isAuthenticated,
+  isAdmin,
+  eventsController.updateEvent,
+);
+eventsRoutes.delete(
+  "/:id",
+  isAuthenticated,
+  isAdmin,
+  eventsController.deleteEvent,
+);

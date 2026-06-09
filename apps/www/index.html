@@ -3,7 +3,10 @@
   <head>
     <script>
       const t = localStorage.getItem("theme");
-      if (t === "dark" || (!t && window.matchMedia("(prefers-color-scheme: dark)").matches)) {
+      if (
+        t === "dark" ||
+        (!t && window.matchMedia("(prefers-color-scheme: dark)").matches)
+      ) {
         document.documentElement.classList.add("dark");
       }
     </script>
@@ -11,14 +14,23 @@
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Manan - A Technosurge</title>
-    <meta name="description" content="Manan is a technical club at J.C. Bose University of Science and Technology driving innovation through events, projects, and a community of passionate engineers." />
+    <meta
+      name="description"
+      content="Manan is a technical club at J.C. Bose University of Science and Technology driving innovation through events, projects, and a community of passionate engineers."
+    />
     <meta property="og:type" content="website" />
     <meta property="og:title" content="Manan - A Technosurge" />
-    <meta property="og:description" content="Manan is a technical club at J.C. Bose University of Science and Technology driving innovation through events, projects, and a community of passionate engineers." />
+    <meta
+      property="og:description"
+      content="Manan is a technical club at J.C. Bose University of Science and Technology driving innovation through events, projects, and a community of passionate engineers."
+    />
     <meta property="og:image" content="/favicon.svg" />
     <meta name="twitter:card" content="summary" />
     <meta name="twitter:title" content="Manan - A Technosurge" />
-    <meta name="twitter:description" content="Manan is a technical club at J.C. Bose University of Science and Technology driving innovation through events, projects, and a community of passionate engineers." />
+    <meta
+      name="twitter:description"
+      content="Manan is a technical club at J.C. Bose University of Science and Technology driving innovation through events, projects, and a community of passionate engineers."
+    />
   </head>
   <body>
     <div id="root"></div>

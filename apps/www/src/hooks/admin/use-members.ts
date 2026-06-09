@@ -1,7 +1,8 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { authClient } from "@/lib/auth-client";
 import { apiFetch, apiPatch } from "@/hooks/admin/api";
-import type { CreateMemberInput, MembersPage } from "@/types/members";
+import type { MemberInput } from "@manan/validations";
+import type { MembersPage } from "@/types/members";
 
 export function useMembers(page = 1) {
   return useQuery({
@@ -23,8 +24,13 @@ export function useUpdateMemberEmail() {
 export function useCreateMember() {
   const qc = useQueryClient();
   return useMutation({
-    mutationFn: ({ name, email }: CreateMemberInput) =>
-      authClient.admin.createUser({ name, email, role: "user", password: crypto.randomUUID() }),
+    mutationFn: ({ name, email }: MemberInput) =>
+      authClient.admin.createUser({
+        name,
+        email,
+        role: "user",
+        password: crypto.randomUUID(),
+      }),
     onSuccess: () => {
       qc.invalidateQueries({ queryKey: ["admin", "members"] });
       qc.invalidateQueries({ queryKey: ["admin", "summary"] });

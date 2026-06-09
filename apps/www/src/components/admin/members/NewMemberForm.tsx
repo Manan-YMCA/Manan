@@ -1,16 +1,16 @@
 import { useNavigate } from "react-router";
 import { useForm } from "@tanstack/react-form";
-import { z } from "zod";
 import { toast } from "sonner";
 import { useCreateMember } from "@/hooks/admin";
+import { memberSchema } from "@manan/validations";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Field, FieldError, FieldGroup, FieldLabel } from "@/components/ui/field";
-
-const schema = z.object({
-  name: z.string().trim().min(2, "Name must be at least 2 characters"),
-  email: z.email("Enter a valid email address"),
-});
+import {
+  Field,
+  FieldError,
+  FieldGroup,
+  FieldLabel,
+} from "@/components/ui/field";
 
 export function NewMemberForm() {
   const navigate = useNavigate();
@@ -19,9 +19,9 @@ export function NewMemberForm() {
   const form = useForm({
     defaultValues: {
       name: "",
-      email: ""
+      email: "",
     },
-    validators: { onChange: schema },
+    validators: { onChange: memberSchema },
     onSubmit: ({ value }) => {
       create.mutate(value, {
         onSuccess: () => {
@@ -35,13 +35,17 @@ export function NewMemberForm() {
 
   return (
     <form
-      onSubmit={(e) => { e.preventDefault(); form.handleSubmit(); }}
+      onSubmit={(e) => {
+        e.preventDefault();
+        form.handleSubmit();
+      }}
       className="space-y-4"
     >
       <FieldGroup>
         <form.Field name="name">
           {(field) => {
-            const isInvalid = field.state.meta.isTouched && !field.state.meta.isValid;
+            const isInvalid =
+              field.state.meta.isTouched && !field.state.meta.isValid;
             return (
               <Field data-invalid={isInvalid}>
                 <FieldLabel htmlFor={field.name}>Name</FieldLabel>
@@ -61,7 +65,8 @@ export function NewMemberForm() {
 
         <form.Field name="email">
           {(field) => {
-            const isInvalid = field.state.meta.isTouched && !field.state.meta.isValid;
+            const isInvalid =
+              field.state.meta.isTouched && !field.state.meta.isValid;
             return (
               <Field data-invalid={isInvalid}>
                 <FieldLabel htmlFor={field.name}>Email</FieldLabel>
@@ -82,12 +87,19 @@ export function NewMemberForm() {
       </FieldGroup>
 
       <div className="flex gap-3">
-        <Button type="button" variant="outline" onClick={() => navigate("/admin/members")}>
+        <Button
+          type="button"
+          variant="outline"
+          onClick={() => navigate("/admin/members")}
+        >
           Cancel
         </Button>
         <form.Subscribe selector={(s) => [s.canSubmit, s.isSubmitting]}>
           {([canSubmit, isSubmitting]) => (
-            <Button type="submit" disabled={!canSubmit || isSubmitting || create.isPending}>
+            <Button
+              type="submit"
+              disabled={!canSubmit || isSubmitting || create.isPending}
+            >
               {create.isPending ? "Creating…" : "Create member"}
             </Button>
           )}

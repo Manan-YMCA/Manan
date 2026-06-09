@@ -23,11 +23,6 @@ export type PublicMember = {
   socialLinks: { title: string; link: string }[];
 };
 
-export type CreateMemberInput = {
-  name: string;
-  email: string;
-};
-
 export type Member = {
   id: string;
   name: string;

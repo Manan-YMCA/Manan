@@ -5,9 +5,13 @@ import { GalleryItemSkeleton } from "@/components/gallery/GalleryItemSkeleton";
 export function Gallery() {
   const { data: items = [], isLoading } = useGallery();
 
-  const years = [...new Set(
-    items.map((i) => new Date(i.timestamp).getFullYear().toString())
-  )].sort().reverse();
+  const years = [
+    ...new Set(
+      items.map((i) => new Date(i.timestamp).getFullYear().toString()),
+    ),
+  ]
+    .sort()
+    .reverse();
 
   return (
     <div className="px-4 sm:px-8 md:px-12 lg:px-20 py-12 pb-32">
@@ -30,13 +34,16 @@ export function Gallery() {
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
               {items
-                .filter((i) => new Date(i.timestamp).getFullYear().toString() === year)
+                .filter(
+                  (i) =>
+                    new Date(i.timestamp).getFullYear().toString() === year,
+                )
                 .map((item) => (
                   <GalleryItem
                     key={item.id}
                     imageUrl={item.imageUrl}
                     name={item.name}
-                    desc={item.desc}
+                    description={item.description}
                   />
                 ))}
             </div>

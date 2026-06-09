@@ -1,12 +1,13 @@
 import { z } from "zod";
 
-export const galleryPayloadSchema = z.object({
-  name: z.string().trim().min(2).max(150),
-  desc: z.string().trim().min(1),
-  image: z.string().trim().url(),
-  imagePublicId: z
-    .union([z.string().trim().min(1), z.literal(""), z.null(), z.undefined()])
-    .transform((value) => (typeof value === "string" && value.trim() ? value.trim() : null)),
+export const galleryQuerySchema = z.object({
+  page: z.coerce.number().int().positive().default(1),
+  limit: z.coerce.number().int().positive().max(100).default(10),
 });
 
-export type GalleryPayload = z.infer<typeof galleryPayloadSchema>;
+export const galleryDeleteSchema = z.object({
+  id: z.string().trim().min(1, { error: "id is mandatory" }),
+});
+
+export type GalleryQuery = z.infer<typeof galleryQuerySchema>;
+export type GalleryDelete = z.infer<typeof galleryDeleteSchema>;

@@ -2,7 +2,9 @@ import { pgTable, text, integer, timestamp, jsonb } from "drizzle-orm/pg-core";
 import { user } from "./auth-schema.js";
 
 export const userProfile = pgTable("userProfiles", {
-  id: text("id").primaryKey().$defaultFn(() => `user_profiles-${crypto.randomUUID()}`),
+  id: text("id")
+    .primaryKey()
+    .$defaultFn(() => `user_profiles-${crypto.randomUUID()}`),
   userId: text("user_id")
     .notNull()
     .unique()
@@ -16,6 +18,10 @@ export const userProfile = pgTable("userProfiles", {
   otherSkills: text("other_skills").notNull(),
   bannerUrl: text("banner_url").notNull(),
   socialLinks: jsonb("social_links").notNull().default([]),
-  createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
-  updatedAt: timestamp("updated_at", { withTimezone: true }).notNull().defaultNow()
+  createdAt: timestamp("created_at", { withTimezone: true })
+    .notNull()
+    .defaultNow(),
+  updatedAt: timestamp("updated_at", { withTimezone: true })
+    .notNull()
+    .defaultNow(),
 });

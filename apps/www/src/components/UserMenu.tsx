@@ -16,7 +16,8 @@ export function UserMenu() {
   const navigate = useNavigate();
 
   const handleLogout = () => {
-    authClient.signOut()
+    authClient
+      .signOut()
       .then(() => navigate("/login"))
       .catch(() => toast.error("Failed to sign out"));
   };
@@ -24,14 +25,15 @@ export function UserMenu() {
   if (!session) {
     return (
       <Button variant="outline" size="sm" asChild>
-        <NavLink to="/login">Login</NavLink>
+        <NavLink to="/login" prefetch="intent">Login</NavLink>
       </Button>
     );
   }
 
   const { user } = session;
   const isAdmin = user.role === "admin";
-  const avatarUrl = user.image || `https://avatar.vercel.sh/${encodeURIComponent(user.name)}`;
+  const avatarUrl =
+    user.image || `https://avatar.vercel.sh/${encodeURIComponent(user.name)}`;
 
   return (
     <DropdownMenu>
@@ -39,7 +41,9 @@ export function UserMenu() {
         <button className="outline-none cursor-pointer">
           <Avatar className="size-8">
             <AvatarImage src={avatarUrl} alt={user.name} />
-            <AvatarFallback>{user.name.slice(0, 2).toUpperCase()}</AvatarFallback>
+            <AvatarFallback>
+              {user.name.slice(0, 2).toUpperCase()}
+            </AvatarFallback>
           </Avatar>
         </button>
       </DropdownMenuTrigger>
@@ -48,11 +52,11 @@ export function UserMenu() {
         <DropdownMenuSeparator />
         {isAdmin ? (
           <DropdownMenuItem asChild>
-            <NavLink to="/admin">Admin page</NavLink>
+            <NavLink to="/admin" prefetch="intent">Admin page</NavLink>
           </DropdownMenuItem>
         ) : (
           <DropdownMenuItem asChild>
-            <NavLink to="/profile">Edit profile</NavLink>
+            <NavLink to="/profile" prefetch="intent">Edit profile</NavLink>
           </DropdownMenuItem>
         )}
         <DropdownMenuSeparator />
