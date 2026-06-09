@@ -10,17 +10,17 @@
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "packageManager": "pnpm@11.1.1",
+  "packageManager": "pnpm@9.15.4",
   "devEngines": {
     "packageManager": {
       "name": "pnpm",
-      "version": "11.1.1",
+      "version": "9.15.4",
       "onFail": "download"
     }
   },
   "type": "module",
   "devDependencies": {
-    "prettier": "^3.8.3",
-    "turbo": "^2.9.12"
+    "prettier": "^3.8.4",
+    "turbo": "^2.9.17"
   }
 }
