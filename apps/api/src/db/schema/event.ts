@@ -1,14 +1,15 @@
-import { jsonb, pgTable, text, timestamp } from "drizzle-orm/pg-core";
+import { pgTable, text, timestamp } from "drizzle-orm/pg-core";
 
 export const events = pgTable("events", {
   id: text("id")
     .primaryKey()
-    .$defaultFn(() => crypto.randomUUID()),
+    .$defaultFn(() => `event-${crypto.randomUUID}`),
   name: text("name").notNull(),
-  desc: text("desc").notNull(),
-  eventDate: text("event_date_value"),
-  eventImage: text("event_image").notNull(),
-  eventlinks: jsonb("links").notNull().default([]),
+  description: text("description").notNull(),
+  date: text("date"),
+  imageUrl: text("image_url").notNull(),
+  activiryReportUrl: text("activity_report_url"),
+  eventReportUrl: text("event_report_url"),
   timestamp: timestamp("timestamp", { withTimezone: true }).notNull().defaultNow(),
   updatedAt: timestamp("updated_at", { withTimezone: true }).notNull().defaultNow(),
 });

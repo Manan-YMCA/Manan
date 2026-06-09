@@ -1,12 +1,12 @@
 import { pgTable, text, integer, timestamp, jsonb } from "drizzle-orm/pg-core";
-import { users } from "./auth-schema.js";
+import { user } from "./auth-schema.js";
 
 export const userProfile = pgTable("userProfiles", {
-  id: text("id").primaryKey().$defaultFn(() => crypto.randomUUID()),
+  id: text("id").primaryKey().$defaultFn(() => `user_profiles-${crypto.randomUUID()}`),
   userId: text("user_id")
     .notNull()
     .unique()
-    .references(() => users.id, { onDelete: "cascade" }),
+    .references(() => user.id, { onDelete: "cascade" }),
   admissionYear: integer("admission_year").notNull(),
   rollNumber: text("roll_number"),
   graduationYear: integer("graduation_year"),
