@@ -1,5 +1,5 @@
 {
-  "buildCommand": "pnpm build",
+  "buildCommand": "turbo build",
   "outputDirectory": "dist",
-  "installCommand": "pnpm install"
+  "rootDirectory": "apps/api"
 }
