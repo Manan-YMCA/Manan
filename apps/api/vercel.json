@@ -1,5 +1,0 @@
-{
-  "buildCommand": "turbo build",
-  "outputDirectory": "dist",
-  "installCommand": "NODE_ENV=development pnpm install"
-}
