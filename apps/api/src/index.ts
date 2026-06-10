@@ -11,11 +11,9 @@ import { apiRouter } from "./routes/v1/index.js";
 
 export const app = express();
 
-const allowedOrigins = [...new Set([env.FRONTEND_URL, ...env.TRUSTED_ORIGINS])];
-
 app.use(
   cors({
-    origin: allowedOrigins,
+    origin: env.TRUSTED_ORIGINS,
     credentials: true,
     methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
     allowedHeaders: ["Content-Type", "Authorization"],
