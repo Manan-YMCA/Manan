@@ -3,7 +3,7 @@ import { NavLink } from "react-router";
 import mananLogo from "@/assets/manan.svg";
 import { ListIcon } from "@phosphor-icons/react";
 import { authClient } from "@/lib/auth-client";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Avatar, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import {
   Sheet,
@@ -72,10 +72,26 @@ export function Navbar() {
           className="w-64 bg-white/70 dark:bg-black/70 backdrop-blur-md border-black/10 dark:border-white/10 text-black dark:text-white"
         >
           <SheetHeader className="border-b border-black/10 dark:border-white/10 pb-4">
-            <SheetTitle className="flex items-center gap-2 text-black dark:text-white font-bold text-lg">
-              <img src={mananLogo} alt="Manan logo" className="size-6" />
-              Manan
-            </SheetTitle>
+            {session ? (
+              <div className="flex items-center gap-2">
+                <Avatar className="size-7">
+                  <AvatarImage
+                    src={
+                      session.user.image ||
+                      `https://avatar.vercel.sh/${encodeURIComponent(session.user.name)}`
+                    }
+                  />
+                </Avatar>
+                <span className="text-sm font-medium truncate">
+                  {session.user.name}
+                </span>
+              </div>
+            ) : (
+              <SheetTitle className="flex items-center gap-2 text-black dark:text-white font-bold text-lg">
+                <img src={mananLogo} alt="Manan logo" className="size-6" />
+                Manan
+              </SheetTitle>
+            )}
           </SheetHeader>
           <ul className="mt-4 flex flex-col gap-1 px-2">
             {links.map(({ to, label }) => (
@@ -93,37 +109,32 @@ export function Navbar() {
                 </NavLink>
               </li>
             ))}
+            {session && (
+              <li>
+                <NavLink
+                  to="/profile"
+                  end
+                  prefetch="intent"
+                  onClick={() => setOpen(false)}
+                  className={({ isActive }) =>
+                    `block rounded-lg px-3 py-2 text-sm transition-colors ${isActive ? "bg-black/5 dark:bg-white/10 text-black dark:text-white font-medium" : "text-black/60 dark:text-white/60 hover:bg-black/5 dark:hover:bg-white/5 hover:text-black dark:hover:text-white"}`
+                  }
+                >
+                  Edit profile
+                </NavLink>
+              </li>
+            )}
           </ul>
           <div className="absolute bottom-6 left-4 right-4">
             {session ? (
               <div className="space-y-2">
-                <div className="flex items-center gap-2 px-1">
-                  <Avatar className="size-7">
-                    <AvatarImage
-                      src={
-                        session.user.image ||
-                        `https://avatar.vercel.sh/${encodeURIComponent(session.user.name)}`
-                      }
-                    />
-                    <AvatarFallback>
-                      {session.user.name.slice(0, 2).toUpperCase()}
-                    </AvatarFallback>
-                  </Avatar>
-                  <span className="text-sm font-medium truncate">
-                    {session.user.name}
-                  </span>
-                </div>
-                <Button variant="outline" size="sm" asChild className="w-full">
-                  {session.user.role === "admin" ? (
+                {session.user.role === "admin" && (
+                  <Button variant="outline" size="sm" asChild className="w-full">
                     <NavLink to="/admin" prefetch="intent" onClick={() => setOpen(false)}>
                       Admin page
                     </NavLink>
-                  ) : (
-                    <NavLink to="/profile/edit" prefetch="intent" onClick={() => setOpen(false)}>
-                      Edit profile
-                    </NavLink>
-                  )}
-                </Button>
+                  </Button>
+                )}
               </div>
             ) : (
               <Button variant="outline" size="sm" asChild className="w-full">
