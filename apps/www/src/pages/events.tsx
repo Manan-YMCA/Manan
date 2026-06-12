@@ -1,20 +1,21 @@
 import { useEvents } from "@/hooks/use-events";
 import { EventCard } from "@/components/events/EventCard";
 import { EventSkeleton } from "@/components/events/EventSkeleton";
+import { formatEventDate } from "@/lib/events";
 
 export function Events() {
   const { data: events = [], isLoading } = useEvents();
 
   const years = [
     ...new Set(
-      events.map((e) => new Date(e.timestamp).getFullYear().toString()),
+      events.map((e) => new Date(e.fromDate).getFullYear().toString()),
     ),
   ]
     .sort()
     .reverse();
 
   return (
-    <div className="px-4 sm:px-8 md:px-12 lg:px-20 py-12 pb-32">
+    <div className="mx-auto border-x px-4 py-12 pb-32 sm:px-8 md:px-12 lg:px-20">
       <h1 className="text-4xl font-bold mb-2">Events</h1>
       <p className="text-muted-foreground mb-12">What we've been up to.</p>
 
@@ -36,14 +37,15 @@ export function Events() {
               {events
                 .filter(
                   (e) =>
-                    new Date(e.timestamp).getFullYear().toString() === year,
+                    new Date(e.fromDate).getFullYear().toString() === year,
                 )
                 .map((event) => (
                   <EventCard
                     key={event.id}
                     event={{
                       name: event.name,
-                      date: event.date,
+                      venue: event.venue,
+                      date: formatEventDate(event.fromDate, event.toDate),
                       description: event.description,
                       banner: event.imageUrl,
                       activityReport: event.activityReportUrl,

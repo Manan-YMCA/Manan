@@ -22,7 +22,9 @@ export function EditEventForm({ event }: { event: AdminEvent }) {
   const form = useForm({
     defaultValues: {
       name: event.name,
-      date: event.date,
+      venue: event.venue,
+      fromDate: event.fromDate,
+      toDate: event.toDate,
       description: event.description,
       activityReportUrl: event.activityReportUrl ?? "",
       eventReportUrl: event.eventReportUrl ?? "",
@@ -71,19 +73,58 @@ export function EditEventForm({ event }: { event: AdminEvent }) {
           }}
         </form.Field>
 
-        <form.Field name="date">
+        <form.Field name="venue">
           {(field) => {
             const isInvalid =
               field.state.meta.isTouched && !field.state.meta.isValid;
             return (
               <Field data-invalid={isInvalid}>
-                <FieldLabel htmlFor={field.name}>Date</FieldLabel>
+                <FieldLabel htmlFor={field.name}>Venue</FieldLabel>
                 <Input
                   id={field.name}
                   value={field.state.value}
                   onChange={(e) => field.handleChange(e.target.value)}
                   onBlur={field.handleBlur}
-                  placeholder="March 2025"
+                />
+                {isInvalid && <FieldError errors={field.state.meta.errors} />}
+              </Field>
+            );
+          }}
+        </form.Field>
+
+        <form.Field name="fromDate">
+          {(field) => {
+            const isInvalid =
+              field.state.meta.isTouched && !field.state.meta.isValid;
+            return (
+              <Field data-invalid={isInvalid}>
+                <FieldLabel htmlFor={field.name}>From date</FieldLabel>
+                <Input
+                  id={field.name}
+                  type="date"
+                  value={field.state.value}
+                  onChange={(e) => field.handleChange(e.target.value)}
+                  onBlur={field.handleBlur}
+                />
+                {isInvalid && <FieldError errors={field.state.meta.errors} />}
+              </Field>
+            );
+          }}
+        </form.Field>
+
+        <form.Field name="toDate">
+          {(field) => {
+            const isInvalid =
+              field.state.meta.isTouched && !field.state.meta.isValid;
+            return (
+              <Field data-invalid={isInvalid}>
+                <FieldLabel htmlFor={field.name}>To date</FieldLabel>
+                <Input
+                  id={field.name}
+                  type="date"
+                  value={field.state.value}
+                  onChange={(e) => field.handleChange(e.target.value)}
+                  onBlur={field.handleBlur}
                 />
                 {isInvalid && <FieldError errors={field.state.meta.errors} />}
               </Field>

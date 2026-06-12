@@ -5,22 +5,15 @@
     {
       "idx": 0,
       "version": "7",
-      "when": 1780864181829,
-      "tag": "0000_short_pyro",
+      "when": 1781246376722,
+      "tag": "0000_hot_spot",
       "breakpoints": true
     },
     {
       "idx": 1,
       "version": "7",
-      "when": 1781016591992,
-      "tag": "0001_whole_drax",
-      "breakpoints": true
-    },
-    {
-      "idx": 2,
-      "version": "7",
-      "when": 1781016625915,
-      "tag": "0002_tranquil_magneto",
+      "when": 1781247902223,
+      "tag": "0001_colossal_silver_sable",
       "breakpoints": true
     }
   ]

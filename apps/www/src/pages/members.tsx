@@ -10,7 +10,7 @@ export function Members() {
     .reverse();
 
   return (
-    <div className="px-4 sm:px-8 md:px-12 lg:px-20 py-12 pb-32">
+    <div className="mx-auto border-x px-4 py-12 pb-32 sm:px-8 md:px-12 lg:px-20">
       <h1 className="text-4xl font-bold mb-2">Members</h1>
       <p className="text-muted-foreground mb-12">The people behind Manan.</p>
 

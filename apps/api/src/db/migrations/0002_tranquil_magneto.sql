@@ -1,1 +1,0 @@
-ALTER TABLE "events" RENAME COLUMN "activity_image_url" TO "activity_report_url";

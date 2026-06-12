@@ -39,8 +39,10 @@ export const eventsController = {
     const { id } = eventParamSchema.parse(req.params);
     const {
       name,
+      venue,
       description,
-      date,
+      fromDate,
+      toDate,
       imageUrl,
       activityReportUrl,
       eventReportUrl,
@@ -48,8 +50,10 @@ export const eventsController = {
 
     const updated = await eventsService.updateEvent(id, {
       name,
+      venue,
       description,
-      date,
+      fromDate,
+      toDate,
       imageUrl,
       activityReportUrl,
       eventReportUrl,
@@ -68,8 +72,10 @@ export const eventsController = {
   createEvent: catchAsync(async (req: Request, res: Response) => {
     const {
       name,
+      venue,
       description,
-      date,
+      fromDate,
+      toDate,
       imageUrl,
       activityReportUrl,
       eventReportUrl,
@@ -77,8 +83,10 @@ export const eventsController = {
 
     const createdEvent = await eventsService.createEvent({
       name,
+      venue,
       description,
-      date,
+      fromDate,
+      toDate,
       imageUrl,
       activityReportUrl,
       eventReportUrl,

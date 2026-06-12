@@ -10,7 +10,7 @@ export const eventsService = {
     const data = await db
       .select()
       .from(events)
-      .orderBy(desc(events.timestamp))
+      .orderBy(desc(events.fromDate))
       .limit(limit)
       .offset(offset);
     const [{ total }] = await db.select({ total: count() }).from(events);

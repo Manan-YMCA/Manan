@@ -1,6 +1,6 @@
 {
-  "id": "6ae6133f-409b-4a0f-ad15-1babdc309d07",
-  "prevId": "4f4eb5c2-4272-4e03-a4c9-5fe3ee7d033a",
+  "id": "30f78c23-dfea-455e-8b28-3167eea5cfa5",
+  "prevId": "7846ee8c-a0c0-47f2-8e1d-d9297cb831b6",
   "version": "7",
   "dialect": "postgresql",
   "tables": {
@@ -110,8 +110,12 @@
           "name": "account_user_id_user_id_fk",
           "tableFrom": "account",
           "tableTo": "user",
-          "columnsFrom": ["user_id"],
-          "columnsTo": ["id"],
+          "columnsFrom": [
+            "user_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
           "onDelete": "cascade",
           "onUpdate": "no action"
         }
@@ -204,8 +208,12 @@
           "name": "session_user_id_user_id_fk",
           "tableFrom": "session",
           "tableTo": "user",
-          "columnsFrom": ["user_id"],
-          "columnsTo": ["id"],
+          "columnsFrom": [
+            "user_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
           "onDelete": "cascade",
           "onUpdate": "no action"
         }
@@ -215,7 +223,9 @@
         "session_token_unique": {
           "name": "session_token_unique",
           "nullsNotDistinct": false,
-          "columns": ["token"]
+          "columns": [
+            "token"
+          ]
         }
       },
       "policies": {},
@@ -304,7 +314,9 @@
         "user_email_unique": {
           "name": "user_email_unique",
           "nullsNotDistinct": false,
-          "columns": ["email"]
+          "columns": [
+            "email"
+          ]
         }
       },
       "policies": {},
@@ -394,17 +406,29 @@
           "primaryKey": false,
           "notNull": true
         },
+        "venue": {
+          "name": "venue",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
         "description": {
           "name": "description",
           "type": "text",
           "primaryKey": false,
           "notNull": true
         },
-        "date": {
-          "name": "date",
-          "type": "text",
+        "from_date": {
+          "name": "from_date",
+          "type": "date",
           "primaryKey": false,
-          "notNull": false
+          "notNull": true
+        },
+        "to_date": {
+          "name": "to_date",
+          "type": "date",
+          "primaryKey": false,
+          "notNull": true
         },
         "image_url": {
           "name": "image_url",
@@ -412,8 +436,8 @@
           "primaryKey": false,
           "notNull": true
         },
-        "activity_image_url": {
-          "name": "activity_image_url",
+        "activity_report_url": {
+          "name": "activity_report_url",
           "type": "text",
           "primaryKey": false,
           "notNull": false
@@ -590,8 +614,12 @@
           "name": "userProfiles_user_id_user_id_fk",
           "tableFrom": "userProfiles",
           "tableTo": "user",
-          "columnsFrom": ["user_id"],
-          "columnsTo": ["id"],
+          "columnsFrom": [
+            "user_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
           "onDelete": "cascade",
           "onUpdate": "no action"
         }
@@ -601,7 +629,9 @@
         "userProfiles_user_id_unique": {
           "name": "userProfiles_user_id_unique",
           "nullsNotDistinct": false,
-          "columns": ["user_id"]
+          "columns": [
+            "user_id"
+          ]
         }
       },
       "policies": {},

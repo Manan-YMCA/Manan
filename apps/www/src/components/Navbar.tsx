@@ -25,45 +25,51 @@ export function Navbar() {
   const { data: session } = authClient.useSession();
 
   return (
-    <nav className="fixed top-0 inset-x-0 z-50 flex items-center justify-between px-6 py-4 bg-white/40 dark:bg-black/50 backdrop-blur-lg border-b border-black/10 dark:border-white/10">
-      <NavLink
-        to="/"
-        prefetch="intent"
-        className="flex items-center gap-2 text-black dark:text-white font-bold text-xl tracking-tight"
-      >
-        <img src={mananLogo} alt="Manan logo" className="size-7" />
-        Manan
-      </NavLink>
-
-      <ul className="hidden md:flex items-center gap-6">
-        {links.map(({ to, label }) => (
-          <li key={to}>
-            <NavLink
-              to={to}
-              end
-              prefetch="intent"
-              className={({ isActive }) =>
-                `text-sm transition-colors ${isActive ? "text-black dark:text-white font-medium" : "text-black/60 dark:text-white/60 hover:text-black dark:hover:text-white"}`
-              }
-            >
-              {label}
-            </NavLink>
-          </li>
-        ))}
-      </ul>
-
-      <div className="flex items-center gap-3">
-        <ThemeToggle />
-        <div className="hidden md:block">
-          <UserMenu />
+    <nav className="fixed top-0 inset-x-0 z-50 px-4 md:px-8 lg:px-12 bg-white/40 dark:bg-black/50 backdrop-blur-lg border-b">
+      <div className="flex items-center justify-between border-x py-4 px-4 md:px-6 lg:px-8">
+        <div>
+          <NavLink
+            to="/"
+            prefetch="intent"
+            className="flex items-center gap-2 text-black dark:text-white font-bold text-xl tracking-tight"
+          >
+            <img src={mananLogo} alt="Manan logo" className="size-7" />
+            Manan
+          </NavLink>
         </div>
-        <button
-          className="md:hidden text-black/60 dark:text-white/60 hover:text-black dark:hover:text-white transition-colors"
-          onClick={() => setOpen(true)}
-          aria-label="Open menu"
-        >
-          <ListIcon size={22} />
-        </button>
+
+        <div className="ml-auto flex items-center">
+          <ul className="hidden md:flex items-center gap-3">
+            {links.map(({ to, label }) => (
+              <li key={to}>
+                <NavLink
+                  to={to}
+                  end
+                  prefetch="intent"
+                  className={({ isActive }) =>
+                    `text-sm transition-colors ${isActive ? "text-black dark:text-white font-medium" : "text-black/60 dark:text-white/80 hover:text-black dark:hover:text-white"}`
+                  }
+                >
+                  {label}
+                </NavLink>
+              </li>
+            ))}
+          </ul>
+
+          <div className="flex items-center gap-3 pl-3">
+            <ThemeToggle />
+            <div className="hidden md:block">
+              <UserMenu />
+            </div>
+            <button
+              className="md:hidden text-black/80 dark:text-white/80 hover:text-black dark:hover:text-white transition-colors"
+              onClick={() => setOpen(true)}
+              aria-label="Open menu"
+            >
+              <ListIcon size={22} />
+            </button>
+          </div>
+        </div>
       </div>
 
       <Sheet open={open} onOpenChange={setOpen}>

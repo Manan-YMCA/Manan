@@ -5,6 +5,8 @@
 @import "@fontsource/lato/300.css";
 @import "@fontsource/lato/700.css";
 @import "@fontsource/lato/900.css";
+@import "@fontsource/orbitron/700.css";
+@import "@fontsource/orbitron/900.css";
 
 @custom-variant dark (&:where(.dark, .dark *));
 
@@ -120,6 +122,20 @@
   --sidebar-ring: oklch(0.556 0 0);
 }
 
+@keyframes marquee-scroll {
+  from {
+    transform: translate3d(0, 0, 0);
+  }
+  to {
+    transform: translate3d(-50%, 0, 0);
+  }
+}
+
+.marquee-track {
+  animation: marquee-scroll 40s linear infinite;
+  will-change: transform;
+}
+
 @keyframes chevron-bounce {
   0%,
   100% {
@@ -141,6 +157,7 @@
 .animate-chevron {
   animation: chevron-bounce 0.8s ease-in-out infinite;
 }
+
 
 .bg-radial-theme {
   background:

@@ -3,6 +3,7 @@ import { NavLink } from "react-router";
 import { toast } from "sonner";
 import type { AdminEvent } from "@/types/events";
 import { useDeleteEvent } from "@/hooks/admin";
+import { formatEventDate } from "@/lib/events";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -64,11 +65,14 @@ export function EventCard({ event }: { event: AdminEvent }) {
       </CardHeader>
       <CardContent className="pb-2">
         <p className="text-xs text-muted-foreground line-clamp-2">
+          {event.venue}
+        </p>
+        <p className="mt-1 text-xs text-muted-foreground line-clamp-2">
           {event.description}
         </p>
       </CardContent>
       <CardFooter className="text-xs text-muted-foreground">
-        {event.date}
+        {formatEventDate(event.fromDate, event.toDate)}
       </CardFooter>
     </Card>
   );

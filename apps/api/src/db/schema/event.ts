@@ -1,12 +1,14 @@
-import { pgTable, text, timestamp } from "drizzle-orm/pg-core";
+import { date, pgTable, text, timestamp } from "drizzle-orm/pg-core";
 
 export const events = pgTable("events", {
   id: text("id")
     .primaryKey()
-    .$defaultFn(() => `event-${crypto.randomUUID}`),
+    .$defaultFn(() => `event-${crypto.randomUUID()}`),
   name: text("name").notNull(),
+  venue: text("venue").notNull(),
   description: text("description").notNull(),
-  date: text("date"),
+  fromDate: date("from_date").notNull(),
+  toDate: date("to_date").notNull(),
   imageUrl: text("image_url").notNull(),
   activityReportUrl: text("activity_report_url"),
   eventReportUrl: text("event_report_url"),

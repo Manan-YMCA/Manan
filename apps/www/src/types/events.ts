@@ -1,5 +1,6 @@
 export type Event = {
   name: string;
+  venue: string;
   date: string;
   description: string;
   banner: string;
@@ -10,8 +11,10 @@ export type Event = {
 export type ApiEvent = {
   id: string;
   name: string;
+  venue: string;
   description: string;
-  date: string;
+  fromDate: string;
+  toDate: string;
   imageUrl: string;
   activityReportUrl: string | null;
   eventReportUrl: string | null;
@@ -21,8 +24,10 @@ export type ApiEvent = {
 export type AdminEvent = {
   id: string;
   name: string;
+  venue: string;
   description: string;
-  date: string;
+  fromDate: string;
+  toDate: string;
   imageUrl: string;
   activityReportUrl: string | null;
   eventReportUrl: string | null;

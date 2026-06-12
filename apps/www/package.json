@@ -10,9 +10,10 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@manan/validations": "workspace:*",
     "@fontsource-variable/jetbrains-mono": "^5.2.8",
     "@fontsource/lato": "^5.2.7",
+    "@fontsource/orbitron": "^5.2.8",
+    "@manan/validations": "workspace:*",
     "@phosphor-icons/react": "^2.1.10",
     "@tailwindcss/vite": "^4.3.0",
     "@tanstack/react-form": "^1.33.0",
