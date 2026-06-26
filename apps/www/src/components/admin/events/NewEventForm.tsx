@@ -1,11 +1,18 @@
 import { useNavigate } from "react-router";
 import { useForm } from "@tanstack/react-form";
+import { CalendarIcon } from "@phosphor-icons/react";
 import { toast } from "sonner";
 import { useCreateEvent } from "@/hooks/admin";
 import { eventPayloadSchema } from "@manan/validations";
 import { ImageUploadField } from "@/components/ImageUploadField";
 import { Button } from "@/components/ui/button";
+import { Calendar } from "@/components/ui/calendar";
 import { Input } from "@/components/ui/input";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
 import { Textarea } from "@/components/ui/textarea";
 import {
   Field,
@@ -13,6 +20,7 @@ import {
   FieldGroup,
   FieldLabel,
 } from "@/components/ui/field";
+import { formatDateValue, parseDateValue } from "@/lib/utils";
 
 export function NewEventForm() {
   const navigate = useNavigate();
@@ -94,16 +102,45 @@ export function NewEventForm() {
           {(field) => {
             const isInvalid =
               field.state.meta.isTouched && !field.state.meta.isValid;
+            const selectedDate = parseDateValue(field.state.value);
             return (
               <Field data-invalid={isInvalid}>
                 <FieldLabel htmlFor={field.name}>From date</FieldLabel>
-                <Input
-                  id={field.name}
-                  type="date"
-                  value={field.state.value}
-                  onChange={(e) => field.handleChange(e.target.value)}
-                  onBlur={field.handleBlur}
-                />
+                <div className="flex w-full">
+                  <Input
+                    id={field.name}
+                    value={field.state.value}
+                    onChange={(e) => field.handleChange(e.target.value)}
+                    onBlur={field.handleBlur}
+                    placeholder="YYYY-MM-DD"
+                    inputMode="numeric"
+                    maxLength={10}
+                    className="border-r-0"
+                  />
+                  <Popover>
+                    <PopoverTrigger asChild>
+                      <Button
+                        type="button"
+                        variant="outline"
+                        size="icon"
+                        aria-label="Open from date calendar"
+                      >
+                        <CalendarIcon aria-hidden="true" />
+                      </Button>
+                    </PopoverTrigger>
+                    <PopoverContent className="w-auto p-0" align="end">
+                      <Calendar
+                        mode="single"
+                        selected={selectedDate}
+                        onSelect={(date) => {
+                          if (date) {
+                            field.handleChange(formatDateValue(date));
+                          }
+                        }}
+                      />
+                    </PopoverContent>
+                  </Popover>
+                </div>
                 {isInvalid && <FieldError errors={field.state.meta.errors} />}
               </Field>
             );
@@ -114,16 +151,45 @@ export function NewEventForm() {
           {(field) => {
             const isInvalid =
               field.state.meta.isTouched && !field.state.meta.isValid;
+            const selectedDate = parseDateValue(field.state.value);
             return (
               <Field data-invalid={isInvalid}>
                 <FieldLabel htmlFor={field.name}>To date</FieldLabel>
-                <Input
-                  id={field.name}
-                  type="date"
-                  value={field.state.value}
-                  onChange={(e) => field.handleChange(e.target.value)}
-                  onBlur={field.handleBlur}
-                />
+                <div className="flex w-full">
+                  <Input
+                    id={field.name}
+                    value={field.state.value}
+                    onChange={(e) => field.handleChange(e.target.value)}
+                    onBlur={field.handleBlur}
+                    placeholder="YYYY-MM-DD"
+                    inputMode="numeric"
+                    maxLength={10}
+                    className="border-r-0"
+                  />
+                  <Popover>
+                    <PopoverTrigger asChild>
+                      <Button
+                        type="button"
+                        variant="outline"
+                        size="icon"
+                        aria-label="Open to date calendar"
+                      >
+                        <CalendarIcon aria-hidden="true" />
+                      </Button>
+                    </PopoverTrigger>
+                    <PopoverContent className="w-auto p-0" align="end">
+                      <Calendar
+                        mode="single"
+                        selected={selectedDate}
+                        onSelect={(date) => {
+                          if (date) {
+                            field.handleChange(formatDateValue(date));
+                          }
+                        }}
+                      />
+                    </PopoverContent>
+                  </Popover>
+                </div>
                 {isInvalid && <FieldError errors={field.state.meta.errors} />}
               </Field>
             );
