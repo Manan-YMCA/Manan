@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { useEvents } from "@/hooks/use-events";
 import { EventCard } from "@/components/events/EventCard";
 import { EventSkeleton } from "@/components/events/EventSkeleton";
@@ -5,6 +6,13 @@ import { formatEventDate } from "@/lib/events";
 
 export function Events() {
   const { data: events = [], isLoading } = useEvents();
+
+  useEffect(() => {
+    if (isLoading || !window.location.hash) return;
+    document
+      .querySelector(window.location.hash)
+      ?.scrollIntoView({ block: "center" });
+  }, [isLoading]);
 
   const years = [
     ...new Set(
