@@ -43,6 +43,7 @@ export function Events() {
                   <EventCard
                     key={event.id}
                     event={{
+                      id: event.id,
                       name: event.name,
                       venue: event.venue,
                       date: formatEventDate(event.fromDate, event.toDate),

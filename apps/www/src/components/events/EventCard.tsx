@@ -1,3 +1,5 @@
+import { Link } from "lucide-react";
+import { toast } from "sonner";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import {
@@ -10,8 +12,14 @@ import {
 import type { Event } from "@/types/events";
 
 export function EventCard({ event }: { event: Event }) {
+  const handleCopyLink = () => {
+    const url = `${window.location.origin}${window.location.pathname}#event-${event.id}`;
+    navigator.clipboard.writeText(url);
+    toast.success("Link copied to clipboard");
+  };
+
   return (
-    <Card className="overflow-hidden flex flex-col py-0">
+    <Card id={`event-${event.id}`} className="overflow-hidden flex flex-col py-0 scroll-mt-24">
       <Dialog>
         <DialogTrigger asChild>
           <button
@@ -40,14 +48,26 @@ export function EventCard({ event }: { event: Event }) {
       </Dialog>
 
       <div className="flex flex-col flex-1 px-5 py-4 gap-3">
-        <div>
-          <h2 className="text-lg font-semibold text-black dark:text-white leading-tight">
-            {event.name}
-          </h2>
-          <p className="text-sm text-[#FB5343] mt-0.5">{event.date}</p>
-          <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
-            {event.venue}
-          </p>
+        <div className="flex items-start justify-between gap-2">
+          <div>
+            <h2 className="text-lg font-semibold text-black dark:text-white leading-tight">
+              {event.name}
+            </h2>
+            <p className="text-sm text-[#FB5343] mt-0.5">{event.date}</p>
+            <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
+              {event.venue}
+            </p>
+          </div>
+          <Button
+            type="button"
+            variant="ghost"
+            size="icon"
+            onClick={handleCopyLink}
+            aria-label={`Copy link to ${event.name}`}
+            className="size-7 shrink-0 text-gray-400 hover:text-[#FB5343]"
+          >
+            <Link className="size-4" />
+          </Button>
         </div>
 
         <p className="text-sm text-gray-700 dark:text-gray-300 leading-relaxed flex-1">
