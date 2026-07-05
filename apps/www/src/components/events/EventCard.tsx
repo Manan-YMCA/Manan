@@ -13,13 +13,13 @@ import type { Event } from "@/types/events";
 
 export function EventCard({ event }: { event: Event }) {
   const handleCopyLink = () => {
-    const url = `${window.location.origin}/events#event-${event.id}`;
+    const url = `${window.location.origin}/events#${event.id}`;
     navigator.clipboard.writeText(url);
     toast.success("Link copied to clipboard");
   };
 
   return (
-    <Card id={`event-${event.id}`} className="overflow-hidden flex flex-col py-0 scroll-mt-24">
+    <Card id={event.id} className="overflow-hidden flex flex-col py-0 scroll-mt-24">
       <Dialog>
         <DialogTrigger asChild>
           <button
