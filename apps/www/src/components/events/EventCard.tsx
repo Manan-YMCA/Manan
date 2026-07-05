@@ -13,7 +13,7 @@ import type { Event } from "@/types/events";
 
 export function EventCard({ event }: { event: Event }) {
   const handleCopyLink = () => {
-    const url = `${window.location.origin}${window.location.pathname}#event-${event.id}`;
+    const url = `${window.location.origin}/events#event-${event.id}`;
     navigator.clipboard.writeText(url);
     toast.success("Link copied to clipboard");
   };
