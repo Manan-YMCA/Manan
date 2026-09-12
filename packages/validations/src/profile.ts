@@ -16,7 +16,17 @@ export const profileSchema = z.object({
   languages: z.string().trim().min(1),
   otherSkills: z.string().trim().min(1),
   bannerUrl: z.url(),
+  phone: z.string().trim().min(6).nullable(),
+  statusType: z.enum(["student", "working"]).nullable(),
+  statusDetail: z.string().trim().min(1).nullable(),
   socialLinks: z.array(socialLinkSchema),
+}).refine((data) => {
+  if (data.statusType && !data.statusDetail) return false;
+  if (!data.statusType && data.statusDetail) return false;
+  return true;
+}, {
+  message: "Status type and detail must both be provided together.",
+  path: ["statusDetail"],
 });
 
 export type Profile = z.infer<typeof profileSchema>;

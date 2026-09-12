@@ -15,6 +15,20 @@
       "when": 1781247902223,
       "tag": "0001_colossal_silver_sable",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1757726400000,
+      "tag": "0002_add_phone_to_user_profiles",
+      "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1789198871039,
+      "tag": "0003_nostalgic_psylocke",
+      "breakpoints": true
     }
   ]
 }
