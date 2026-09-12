@@ -31,6 +31,9 @@ export function ProfileForm({ profile }: { profile: Profile }) {
       languages: profile.languages,
       otherSkills: profile.otherSkills,
       bannerUrl: profile.bannerUrl,
+      phone: profile.phone ?? null,
+      statusType: profile.statusType ?? null,
+      statusDetail: profile.statusDetail ?? null,
       socialLinks: profile.socialLinks ?? [],
     },
     validators: { onChange: profileSchema },
@@ -145,6 +148,94 @@ export function ProfileForm({ profile }: { profile: Profile }) {
             </Field>
           )}
         </form.Field>
+
+        <form.Field name="phone">
+          {(field) => {
+            const isInvalid =
+              field.state.meta.isTouched && !field.state.meta.isValid;
+            return (
+              <Field data-invalid={isInvalid}>
+                <FieldLabel htmlFor={field.name}>Phone</FieldLabel>
+                <Input
+                  id={field.name}
+                  type="tel"
+                  value={field.state.value || ""}
+                  onChange={(e) => field.handleChange(e.target.value || null)}
+                  onBlur={field.handleBlur}
+                  placeholder="+91 9876543210"
+                />
+                {isInvalid && <FieldError errors={field.state.meta.errors} />}
+              </Field>
+            );
+          }}
+        </form.Field>
+
+        <div className="grid grid-cols-2 gap-4">
+          <form.Field name="statusType">
+            {(field) => {
+              const isInvalid =
+                field.state.meta.isTouched && !field.state.meta.isValid;
+              return (
+                <Field data-invalid={isInvalid}>
+                  <FieldLabel htmlFor={field.name}>Status</FieldLabel>
+                  <select
+                    id={field.name}
+                    value={field.state.value || ""}
+                    onChange={(e) =>
+                      field.handleChange(
+                        (e.target.value as "student" | "working") || null,
+                      )
+                    }
+                    onBlur={field.handleBlur}
+                    className="flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50"
+                  >
+                    <option value="">Select status...</option>
+                    <option value="student">Student</option>
+                    <option value="working">Working Professional</option>
+                  </select>
+                  {isInvalid && <FieldError errors={field.state.meta.errors} />}
+                </Field>
+              );
+            }}
+          </form.Field>
+
+          <form.Subscribe selector={(state) => state.values.statusType}>
+            {(statusType) => (
+              <form.Field name="statusDetail">
+                {(field) => {
+                  const isInvalid =
+                    field.state.meta.isTouched && !field.state.meta.isValid;
+                  return (
+                    <Field data-invalid={isInvalid}>
+                      <FieldLabel htmlFor={field.name}>
+                        {statusType === "working"
+                          ? "Company Name"
+                          : statusType === "student"
+                            ? "College/University"
+                            : "Details"}
+                      </FieldLabel>
+                      <Input
+                        id={field.name}
+                        disabled={!statusType}
+                        value={field.state.value || ""}
+                        onChange={(e) => field.handleChange(e.target.value || null)}
+                        onBlur={field.handleBlur}
+                        placeholder={
+                          statusType === "working"
+                            ? "Google, Microsoft, etc."
+                            : statusType === "student"
+                              ? "YMCA, IIT, etc."
+                              : ""
+                        }
+                      />
+                      {isInvalid && <FieldError errors={field.state.meta.errors} />}
+                    </Field>
+                  );
+                }}
+              </form.Field>
+            )}
+          </form.Subscribe>
+        </div>
 
         <form.Field name="techStack">
           {(field) => {

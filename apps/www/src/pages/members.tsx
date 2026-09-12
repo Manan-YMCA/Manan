@@ -35,6 +35,7 @@ export function Members() {
                   <MemberCard
                     key={member.id}
                     member={{
+                      id: member.id,
                       name: member.name,
                       role: member.designation,
                       pfp:

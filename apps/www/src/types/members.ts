@@ -1,4 +1,5 @@
 export type MemberCardData = {
+  id: string;
   name: string;
   role: string;
   pfp: string;

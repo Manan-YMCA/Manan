@@ -38,6 +38,19 @@ export const adminController = {
       );
   }),
 
+  getMemberPrivateDetails: catchAsync(async (req: Request, res: Response) => {
+    const data = await adminService.getMemberPrivateDetails(req.params["id"] as string);
+    res
+      .status(httpStatus.OK)
+      .json(
+        new ApiResponse(
+          httpStatus.OK,
+          data,
+          "Private details fetched successfully.",
+        ),
+      );
+  }),
+
   listPublicMembers: catchAsync(async (_req: Request, res: Response) => {
     const members = await adminService.listPublicMembers();
     res

@@ -17,6 +17,9 @@ export const profileService = {
         languages: userProfile.languages,
         otherSkills: userProfile.otherSkills,
         bannerUrl: userProfile.bannerUrl,
+        phone: userProfile.phone,
+        statusType: userProfile.statusType,
+        statusDetail: userProfile.statusDetail,
         socialLinks: userProfile.socialLinks,
       })
       .from(user)

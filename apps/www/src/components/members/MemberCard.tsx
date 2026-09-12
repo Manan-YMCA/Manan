@@ -1,7 +1,37 @@
+import { useState } from "react";
+import { useNavigate } from "react-router";
 import { Card } from "@/components/ui/card";
+import { useMemberPrivateDetails } from "@/hooks/use-members";
+import { authClient } from "@/lib/auth-client";
 import type { MemberCardData } from "@/types/members";
 
 export function MemberCard({ member }: { member: MemberCardData }) {
+  const navigate = useNavigate();
+  const { data: session } = authClient.useSession();
+  const [isRevealed, setIsRevealed] = useState(false);
+  const detailsQuery = useMemberPrivateDetails(member.id);
+
+  const handleToggleDetails = async () => {
+    if (!session) {
+      navigate("/login");
+      return;
+    }
+    if (isRevealed) {
+      setIsRevealed(false);
+    } else {
+      if (!detailsQuery.data) {
+        const result = await detailsQuery.refetch();
+        if (result.isError) {
+          if ((result.error as any)?.status === 401) {
+            navigate("/login");
+            return;
+          }
+        }
+      }
+      setIsRevealed(true);
+    }
+  };
+
   return (
     <Card className="overflow-hidden bg-white/60 dark:bg-white/5 border-black/10 dark:border-white/10 backdrop-blur-sm">
       <div className="aspect-[3/1] w-full overflow-hidden bg-slate-300 dark:bg-slate-700">
@@ -44,6 +74,33 @@ export function MemberCard({ member }: { member: MemberCardData }) {
         </p>
 
         <div className="space-y-1.5 pb-3 text-sm text-gray-700 dark:text-gray-300 border-t border-black/10 dark:border-white/10 pt-3">
+          <div className="flex items-center justify-between">
+            <div className="flex flex-col">
+              <p>
+                <span className="font-semibold text-black dark:text-white">
+                  Phone:{" "}
+                </span>
+                <span className="font-mono text-xs">
+                  {isRevealed
+                    ? detailsQuery.isLoading || detailsQuery.isFetching
+                      ? "Loading..."
+                      : detailsQuery.data?.phone || "Not provided"
+                    : "•••• •••• ••"}
+                </span>
+              </p>
+              {isRevealed && detailsQuery.data?.statusType && (
+                <p className="mt-0.5 text-xs text-muted-foreground">
+                  <span className="capitalize">{detailsQuery.data.statusType}</span> at {detailsQuery.data.statusDetail}
+                </p>
+              )}
+            </div>
+            <button
+              onClick={handleToggleDetails}
+              className="text-xs text-blue-600 hover:underline dark:text-blue-400 self-start"
+            >
+              {isRevealed ? "Hide" : "Show details"}
+            </button>
+          </div>
           <p>
             <span className="font-semibold text-black dark:text-white">
               Languages:{" "}

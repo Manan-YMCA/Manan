@@ -48,6 +48,18 @@ export const adminService = {
     return updated ?? null;
   },
 
+  async getMemberPrivateDetails(id: string) {
+    const [row] = await db
+      .select({
+        phone: userProfile.phone,
+        statusType: userProfile.statusType,
+        statusDetail: userProfile.statusDetail,
+      })
+      .from(userProfile)
+      .where(eq(userProfile.userId, id));
+    return row ?? { phone: null, statusType: null, statusDetail: null };
+  },
+
   async listMembers(page: number, limit: number) {
     const offset = (page - 1) * limit;
     const [data, [{ total }]] = await Promise.all([
